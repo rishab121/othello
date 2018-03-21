@@ -13,6 +13,19 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
 
+import socket from "./socket";
+
+
+function init(){
+    let root = document.getElementById('game');
+    if(!root){
+        return;
+    }
+    let channel = socket.channel("games:" + gameName, {});
+    // run the function of react here
+}
+
+$(init);
 // Import local files
 //
 // Local files can be imported directly using relative

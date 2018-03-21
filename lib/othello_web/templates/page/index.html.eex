@@ -1,3 +1,13 @@
-<div id="game">
-  Loading...
-</div> 
+
+ <script>
+        function displayname(){
+        var tb = document.getElementById('game_name').value
+        //window.addEventListener("change", myFunction);
+        var a = document.getElementById("a");
+        var st = "games/" + tb;
+        a.setAttribute("href",st);
+        }
+</script>
+<h1>Join A Game</h1>
+Enter Name of the Game <input type=text id="game_name" onchange="displayname()"> 
+<a id="a" href="/games/demo"> Go to Game</a>
