@@ -14,6 +14,7 @@
 import "phoenix_html"
 
 import socket from "./socket";
+import run_othello from "./othelloGame";
 
 
 function init(){
@@ -23,6 +24,7 @@ function init(){
     }
     let channel = socket.channel("games:" + gameName, {});
     // run the function of react here
+    run_othello(root, channel)
 }
 
 $(init);
