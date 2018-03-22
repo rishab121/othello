@@ -4,7 +4,7 @@ defmodule Othello.Game do
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
             score1: 0,
             score2: 0,
-            turn: false
+            turn: 0
         }
 
     end
@@ -20,9 +20,13 @@ defmodule Othello.Game do
 
     def getFirstHorizontal(squares, i, lower,limit,turn) do
         flag = false
+        IO.puts(lower)
+        IO.puts(limit)
         if(limit>=lower) do
+            IO.puts("limit more than lower")
             if(Enum.at(squares,limit) !=turn and Enum.at(squares,limit)!=nil) do
-                getFirstHorizontal(squares,i,lower,limit-1,turn)
+                IO.puts("should recurse")
+                limit = getFirstHorizontal(squares,i,lower,limit-1,turn)
             else 
                 if(Enum.at(squares,limit)==turn) do
                     flag = true
@@ -32,7 +36,7 @@ defmodule Othello.Game do
         if(flag==true) do
             limit
         else
-            limit+1
+            limit
         end
     end
 
@@ -46,7 +50,7 @@ defmodule Othello.Game do
         row7 = [48, 55]
         row8 = [56,63]
         index = -1
-        limit = i
+        limit = i-1
         if(i>=Enum.at(row1,0) and i<=Enum.at(row1,1)) do
             lower = Enum.at(row1,0)
             index = getFirstHorizontal(squares, i,lower,limit,turn)
@@ -60,6 +64,7 @@ defmodule Othello.Game do
             index = getFirstHorizontal(squares, i,lower,limit,turn)
         end       
         if(i>=Enum.at(row4,0) and i<=Enum.at(row4,1)) do
+            IO.puts("came to row4")
             lower = Enum.at(row4,0)
             index = getFirstHorizontal(squares, i,lower,limit,turn)
         end
@@ -79,18 +84,24 @@ defmodule Othello.Game do
             lower = Enum.at(row8,0)
             index = getFirstHorizontal(squares, i,lower,limit,turn)
         end
+        IO.puts(index)
         index
     end
 
     def changeSquareColor(squares,i,color) do
         squares = List.replace_at(squares,i,color)
+        IO.puts("hey")
+        IO.puts(i)
+        IO.puts(Enum.at(squares,i))
         squares
     end
 
     def changeLeftHorizontal(squares,i,index,color) do
+        IO.puts("in checklefthori")
         if(i>=index) do
+            IO.puts("in uska if")
             squares = changeSquareColor(squares,i,color)
-            changeLeftHorizontal(squares,i-1,index,color)
+            squares = changeLeftHorizontal(squares,i-1,index,color)
         end
         squares
     end
@@ -100,7 +111,7 @@ defmodule Othello.Game do
 
         flag = false
         if(limit<=higher) do
-            if(Enum.at(squares,limit) !=turn and Enum.at(squares,limit)!=nil) do
+            if(Enum.at(squares,limit) !=turn and Enum.at(squares,limit)!=nil and limit !=i) do
                 getLastHorizontal(squares,i,higher,limit+1,turn)
             else
                 if(Enum.at(squares,limit)==turn) do
@@ -139,6 +150,7 @@ defmodule Othello.Game do
             index = getLastHorizontal(squares, i,higher,limit,turn)
         end       
         if(i>=Enum.at(row4,0) and i<=Enum.at(row4,1)) do
+            
             higher = Enum.at(row4,1)
             index = getLastHorizontal(squares, i,higher,limit,turn)
         end
@@ -170,11 +182,18 @@ defmodule Othello.Game do
     end
 
     def checkHorizontal(squares,i,valid,turn) do
+        IO.puts("check horizontal")
         if (valid == false) do
+            IO.puts("valid false")
             if(Enum.at(squares,i-1) != nil and Enum.at(squares,i+1) == nil) do
+                IO.puts("will get row now")
                 index = getFirstSquareHorizontal(squares,i,turn) #first filled square of that row
-                if(index >= 0 and index-i>1) do
+                IO.puts("index")
+                IO.puts(index)
+                if(index >= 0) do
+                    IO.puts("calling changelefthori")
                     squares = changeLeftHorizontal(squares,i,index,turn)
+                    
                     valid = true
                 end
             else
@@ -187,13 +206,15 @@ defmodule Othello.Game do
                 end
             end
         end
+       
         %{
-            squares: squares
+            squares: squares,
             valid: valid
         }
     end
 
     def checkValidMove(squares,i,valid,turn) do
+        IO.puts("checkvalidmove")
         check = checkHorizontal(squares,i,valid,turn)
         #check = checkVertical(check.squares,i,check.valid,turn)
         #check = checkDiagonal(check.squares,i,check.valid,turn)
@@ -207,8 +228,17 @@ defmodule Othello.Game do
 
         if(Enum.at(squares,i) == nil) do
             valid = false
-            squares = checkValidMove(squares,i,valid,turn)
+            obj = checkValidMove(squares,i,valid,turn)
+            squares = obj.squares
+            
         end
+        
+        %{
+            squares: squares,
+            score1: score1,
+            score2: score2,
+            turn: turn
+        }
     
         
           

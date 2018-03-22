@@ -19,17 +19,19 @@ class Othello extends React.Component{
             squares: Array(64).fill(null),
             score1: 0,
             score2: 0,
-            turn: false
+            turn: 0,
         };
     }
 
     gotView(view){
+      console.log(view.game);
       this.setState(view.game);
     }
     handleClickByServer(i){
       //console.log("yaha aaay");
       this.channel.push("handleClickByServer",{num:i })
-          .receive("ok",this.gotView.bind(this))
+          .receive("ok", this.gotView.bind(this))
+
     }
     handleClick(i){
       //console.log("clicked")
@@ -53,7 +55,7 @@ class Othello extends React.Component{
           </div>
           <div >
             <div className="score"><p>Score1 :: {this.state.score1} </p></div>
-            <div className="score"><p>Score2 :: {this.state.score1} </p></div>
+            <div className="score"><p>Score2 :: {this.state.score2} </p></div>
           </div>
           <div>
             <RestartFunc onClick = {() => this.restartFn()} />
@@ -189,7 +191,7 @@ function Square(props){
 function Squarevalues(props){
   return(
     <button className="square-filled btn" onClick={props.onClick} >
-    <span class="white"></span>
+    <span className="white"></span>
      </button>
   );
 }
@@ -197,7 +199,7 @@ function Squarevalues(props){
 function Squarescored(props){
   return(
     <button className="square-scored btn"  onClick={props.onClick} >
-    <span class="black"></span>
+    <span className="black"></span>
     </button>
   );
 }

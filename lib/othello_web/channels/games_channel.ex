@@ -2,13 +2,13 @@ defmodule OthelloWeb.GamesChannel do
   use OthelloWeb, :channel
 
   def join("games:"<> name, payload, socket) do
-    game = Othello.GameBackup.load(name) || Game.new()
+    game = Othello.GameBackup.load(name) || Othello.Game.new()
     socket = socket
     |> assign(:game, game)
     |> assign(:name, name)
 
     if authorized?(payload) do
-      {:ok, %{"game" => Game.client_view(game)}, socket}
+      {:ok, %{"game" => Othello.Game.client_view(game)}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -29,10 +29,10 @@ defmodule OthelloWeb.GamesChannel do
 
   def handle_in("handleClickByServer", %{"num" => num}, socket) do
     game0 = socket.assigns[:game]
-    game1 = Game.handleClickByServer(game0,num)
+    game1 = Othello.Game.handleClickByServer(game0,num)
     Othello.GameBackup.save(socket.assigns[:name], game1)
     socket = assign(socket, :game, game1)
-    {:reply, {:ok, %{"game" => Game.client_view(game1)}}, socket}
+    {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
   end
   #def handle_in("handleTimeOut", %{"game" => game}, socket) do
   #  game0 = socket.assigns[:game]
@@ -46,7 +46,7 @@ defmodule OthelloWeb.GamesChannel do
     game1 = Game.handlerestart(game0)
     Othello.GameBackup.save(socket.assigns[:name], game1)
     socket = assign(socket, :game, game1)
-    {:reply, {:ok, %{"game" => Game.client_view(game1)}}, socket}
+    {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
   end
 
   # Add authorization logic here as required.
