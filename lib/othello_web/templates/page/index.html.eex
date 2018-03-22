@@ -8,6 +8,30 @@
         a.setAttribute("href",st);
         }
 </script>
+<style>
+body {
+        background: url("/images/othello.jpeg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+}
+.relative {
+    position: fixed;
+    left: 600px;
+    top: 500px;
+}
+.setfont {
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+    font: bold;
+    
+  }
+
+</style>
+<body class="relative setfont">
 <h1>Join A Game</h1>
-Enter Name of the Game <input type=text id="game_name" onchange="displayname()"> 
+Enter Name  <input type=text id="game_name" onchange="displayname()"> 
 <a id="a" href="/games/demo"> Go to Game</a>
+</body>
