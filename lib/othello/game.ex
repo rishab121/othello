@@ -260,13 +260,13 @@ defmodule Othello.Game do
 
     def getUpLimit(limit) do
         if(limit>7) do
-            limit = getUplimit(limit-8)
+            limit = getUpLimit(limit-8)
         end
     end
 
     def getDownLimit(limit) do
         if(limit<64) do
-            limit = getDownlimit(limit+8)
+            limit = getDownLimit(limit+8)
         end
     end
 
@@ -302,7 +302,7 @@ defmodule Othello.Game do
                     index = getLastSquareVertical(squares,i,turn)
                     downLimit = getDownlimit(i)
                     squares = changeDownVertical(squares,i,downLimit,turn)
-                    valid: true
+                    valid = true
                 end
             end
         end
