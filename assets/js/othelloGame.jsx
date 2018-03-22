@@ -11,6 +11,10 @@ export default function run_othello(root, channel) {
 class Othello extends React.Component{
     constructor(props){
         super(props);
+        this.channel = props.channel;
+        this.channel.join()
+        .receive("ok", this.gotView.bind(this))
+        .receive("error", resp => { console.log("Unable to join", resp); });
         this.state = {
             squares: Array(64).fill(null),
             score1: 0,
@@ -19,8 +23,22 @@ class Othello extends React.Component{
         };
     }
 
-    
-    
+    gotView(view){
+      this.setState(view.game);
+    }
+    handleClickByServer(i){
+      //console.log("yaha aaay");
+      this.channel.push("handleClickByServer",{num:i })
+          .receive("ok",this.gotView.bind(this))
+    }
+    handleClick(i){
+      //console.log("clicked")
+       this.handleClickByServer(i); 
+    }
+    restartFn(){
+      this.channel.push("restartFn",{})
+      .receive("ok",this.gotView.bind(this))
+    }
     render() {
         const current = this.state.squares;
         return (
@@ -29,18 +47,17 @@ class Othello extends React.Component{
             <div className="game-board">
                 <Board 
                     squares= {current}
+                    onClick = {(i) => this.handleClick(i)}
                 />
             </div>
           </div>
           <div >
-            <div className="score"><p>Number of clicks :: {this.state.clicks} </p></div>
-          </div>
-          <div >
-            <div className="score"><p>Number of tiles resolved :: {score} </p></div>
+            <div className="score"><p>Score1 :: {this.state.score1} </p></div>
+            <div className="score"><p>Score2 :: {this.state.score1} </p></div>
           </div>
           <div>
             <RestartFunc onClick = {() => this.restartFn()} />
-            <a className="btn btn-primary btn-lg github" href="https://github.com/rishab121/memory" target="_blank">
+            <a className="btn btn-primary btn-lg github" href="https://github.com/rishab121/othello" target="_blank">
               Github Link
             </a>
           </div>
@@ -54,25 +71,21 @@ class Board extends React.Component{
 
     renderSquare(i) {
         const value = this.props.squares[i];
-        const scored = this.props.squaresScored[i];
         if (value == null){
           return ( 
             <Square 
-            value={this.props.squares[i]}
             onClick= {() => this.props.onClick(i)}
           />);
         }
-        else if(value != null & !scored){
+        else if(value == 1){
           return ( 
             <Squarevalues 
-            value={this.props.squares[i]}
             onClick= {() => this.props.onClick(i)}
           />);
         }
         else{
           return ( 
             <Squarescored 
-            value={this.props.squares[i]}
             onClick= {() => this.props.onClick(i)}
           />);
         }
@@ -168,17 +181,31 @@ class Board extends React.Component{
 }
 
 function Square(props){
-    return (
-        <button className="square btn" onClick={props.onClick} >
-        {props.value}
-        </button>
-    );
+  return (
+      <button className="square btn" onClick={props.onClick} >
+       </button>
+  );
+}
+function Squarevalues(props){
+  return(
+    <button className="square-filled btn" onClick={props.onClick} >
+    <span class="white"></span>
+     </button>
+  );
 }
 
-function SquareVal(props){
-    return (
-        <button className="square btn" onClick={props.onClick} >
-        {props.value}
-        </button>
-    );
+function Squarescored(props){
+  return(
+    <button className="square-scored btn"  onClick={props.onClick} >
+    <span class="black"></span>
+    </button>
+  );
+}
+
+function RestartFunc(props){
+  return(
+    <button className="btn btn-danger btn-lg" onClick={props.onClick} >
+    Restart
+     </button>
+  );
 }
