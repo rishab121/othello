@@ -108,11 +108,13 @@ defmodule Othello.Game do
 
     #returns : the rightmost square of the given row higher index
     def getLastHorizontal(squares, i, higher,limit,turn) do
-
+        IO.puts("in getlasthori")
         flag = false
         if(limit<=higher) do
-            if(Enum.at(squares,limit) !=turn and Enum.at(squares,limit)!=nil and limit !=i) do
-                getLastHorizontal(squares,i,higher,limit+1,turn)
+            IO.puts("limit less than higher")
+            if(Enum.at(squares,limit) !=turn and Enum.at(squares,limit)!=nil) do
+                IO.puts("in that if")
+                limit = getLastHorizontal(squares,i,higher,limit+1,turn)
             else
                 if(Enum.at(squares,limit)==turn) do
                     flag = true
@@ -122,7 +124,7 @@ defmodule Othello.Game do
         if(flag==true) do
             limit
         else
-            limit-1
+            limit
         end
     end
 
@@ -136,7 +138,7 @@ defmodule Othello.Game do
         row7 = [48, 55]
         row8 = [56,63]
         index = -1
-        limit = i
+        limit = i+1
         if(i>=Enum.at(row1,0) and i<=Enum.at(row1,1)) do
             higher = Enum.at(row1,1)
             index = getLastHorizontal(squares, i,higher,limit,turn)
@@ -174,9 +176,11 @@ defmodule Othello.Game do
     end
 
     def changeRightHorizontal(squares,i,index,color) do
+        IO.puts("in changerighthori")
         if(i<=index) do
+            IO.puts("uska if")
             squares = changeSquareColor(squares,i,color)
-            changeRightHorizontal(squares,i+1,index,color)
+            squares = changeRightHorizontal(squares,i+1,index,color)
         end
         squares
     end
@@ -197,9 +201,14 @@ defmodule Othello.Game do
                     valid = true
                 end
             else
+                IO.puts("checking rightside")
                 if (Enum.at(squares,i-1) == nil and Enum.at(squares,i+1) != nil) do
+                    IO.puts("will get row")
                     index = getLastSquareHorizontal(squares,i,turn)
-                    if (index>=0 and i-index>1) do
+                    IO.puts("index")
+                    IO.puts(index)
+                    if (index>=0) do
+                        IO.puts("calling changerighthori")
                         squares = changeRightHorizontal(squares,i,index,turn)
                         valid = true
                     end
