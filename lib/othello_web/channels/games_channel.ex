@@ -32,6 +32,7 @@ defmodule OthelloWeb.GamesChannel do
     game1 = Othello.Game.handleClickByServer(game0,num)
     Othello.GameBackup.save(socket.assigns[:name], game1)
     socket = assign(socket, :game, game1)
+    send(self, {:after_click} )
     {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
   end
   #def handle_in("handleTimeOut", %{"game" => game}, socket) do
@@ -52,6 +53,13 @@ defmodule OthelloWeb.GamesChannel do
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true
+  end
+  def handle_info({:after_click}, socket) do
+    game = socket.assigns[:game]
+    #Memory.GameBackup.save(socket.assigns[:name], game)
+    #IO.puts("click func")
+    broadcast socket, "reload:view", %{game: game}
+    {:noreply, socket}
   end
 
 end
