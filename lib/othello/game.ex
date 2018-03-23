@@ -568,11 +568,13 @@ defmodule Othello.Game do
         index = indexObj.limit - 8
         turnCount = indexObj.turnCount
         lastTurn = indexObj.lastTurn
-        #IO.puts("index")
-        #IO.puts(index)
-        #IO.puts("downlimit")
-        #IO.puts(downLimit)
         notAllSame = lastTurn - i
+        IO.puts("index")
+        IO.puts(index)
+        IO.puts("downlimit")
+        IO.puts(downLimit)
+        IO.puts("notallsame")
+        IO.puts(notAllSame)
         if(index==lastTurn and notAllSame != turnCount) do
             squares = changeDownVertical(squares,i,index,turn)
             valid = true
@@ -600,7 +602,7 @@ defmodule Othello.Game do
     end
 
     def checkVertical(squares,i,valid,turn) do
-        #IO.puts("in checkverti")
+        IO.puts("in checkverti")
         #AVOIDS ARRAY INDEXING ERROR
         if(i<8 or i>63) do
             obj = handleFirstLastRow(squares,i,turn)
@@ -609,12 +611,14 @@ defmodule Othello.Game do
         else
             #CHECKS WHEN NOTHING DOWN BUT SOMETHING UP
             if(Enum.at(squares,i-8) !=nil and Enum.at(squares,i+8) == nil) do
+                IO.puts("should not be here")
                 obj = handleOnlyUp(squares,i,turn)
                 squares = obj.squares
                 valid = obj.valid
             else
                 #WHEN NOTHING UP BUT SOMETHING DOWN
                 if(Enum.at(squares,i-8) ==nil and Enum.at(squares,i+8) != nil) do
+                    IO.puts("should handle down")
                     obj = handleOnlyDown(squares,i,turn)
                     squares = obj.squares
                     valid = obj.valid
