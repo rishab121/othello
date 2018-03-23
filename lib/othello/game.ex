@@ -493,11 +493,12 @@ defmodule Othello.Game do
                 turnCount = indexObj.turnCount
                 lastTurn = indexObj.lastTurn
                 notAllSame = lastTurn - i
-                if(index==lastTurn and notAllSame != turnCount and notAllSame > 8) do
+                turnC = turnCount*8
+                if(index==lastTurn and notAllSame != turnC and notAllSame > 8) do
                     squares = changeDownVertical(squares,i,index,turn)
                     valid = true
                 else
-                    if(lastTurn != i and notAllSame != turnCount and notAllSame > 8) do
+                    if(lastTurn != i and notAllSame != turnC and notAllSame > 8) do
                         squares = changeDownVertical(squares,i,lastTurn,turn)
                         valid = true
                     end
@@ -506,17 +507,18 @@ defmodule Othello.Game do
         else
             if(Enum.at(squares,i-8)!=nil) do
                 limit = i-8
-                upLimit = getUpLimit(i) 
+                upLimit = getUpLimit(i) - 8
                 indexObj = getFirstSquareVertical(squares,i,limit,upLimit,turn,0,i)
                 index = indexObj.limit + 8
                 turnCount = indexObj.turnCount
                 lastTurn = indexObj.lastTurn
                 notAllSame = i - lastTurn
-                if(index==lastTurn and notAllSame != turnCount and notAllSame > 8) do
+                turnC = turnCount*8
+                if(index==lastTurn and notAllSame != turnC and notAllSame > 8) do
                     squares = changeUpVertical(squares,i,index,turn)
                     valid = true
                 else
-                    if(lastTurn != i and notAllSame != turnCount and notAllSame > 8) do
+                    if(lastTurn != i and notAllSame != turnC and notAllSame > 8) do
                         squares = changeUpVertical(squares,i,lastTurn,turn)
                         valid = true
                     end
@@ -533,12 +535,13 @@ defmodule Othello.Game do
     def handleOnlyUp(squares,i,turn) do
         #IO.puts("came to up if")
         limit = i-8
-        upLimit = getUpLimit(i)
+        upLimit = getUpLimit(i) - 8
         indexObj = getFirstSquareVertical(squares,i,limit,upLimit,turn,0,i) 
         index = indexObj.limit + 8
         turnCount = indexObj.turnCount
         lastTurn = indexObj.lastTurn
         notAllSame = i - lastTurn
+        turnC = turnCount*8
         IO.puts("in handle only up")
         IO.puts("index")
         IO.puts(index)
@@ -548,12 +551,15 @@ defmodule Othello.Game do
         IO.puts(turnCount)
         IO.puts("notallsame")
         IO.puts(notAllSame)
-        if(index==lastTurn and notAllSame != turnCount and notAllSame > 8) do
+        
+        IO.puts("turnC")
+        IO.puts(turnC)
+        if(index==lastTurn and notAllSame != turnC and notAllSame > 8) do
             IO.puts("if lastturn==index which should be false")
             squares = changeUpVertical(squares,i,index,turn)
             valid = true
         else
-            if(lastTurn != i and notAllSame != turnCount and notAllSame > 8) do
+            if(lastTurn != i and notAllSame != turnC and notAllSame > 8) do
                 IO.puts("in else but it should not be here either")
                 squares = changeUpVertical(squares,i,lastTurn,turn)
                 valid = true
@@ -580,11 +586,12 @@ defmodule Othello.Game do
         IO.puts(downLimit)
         IO.puts("notallsame")
         IO.puts(notAllSame)
-        if(index==lastTurn and notAllSame != turnCount and notAllSame > 8) do
+        turnC = turnCount*8
+        if(index==lastTurn and notAllSame != turnC and notAllSame > 8) do
             squares = changeDownVertical(squares,i,index,turn)
             valid = true
         else
-            if(lastTurn != i and notAllSame != turnCount and notAllSame > 8) do
+            if(lastTurn != i and notAllSame != turnC and notAllSame > 8) do
                 squares = changeDownVertical(squares,i,lastTurn,turn)
                 valid = true
             end
