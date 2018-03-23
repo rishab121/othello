@@ -134,7 +134,7 @@ defmodule Othello.Game do
                     turnCount = turnCount+1
                     lastTurn = limit
                 end
-                obj=getLastHorizontal(squares,i,lower,limit+1,turn,turnCount,lastTurn)
+                obj = getLastHorizontal(squares,i,higher,limit+1,turn,turnCount,lastTurn)
                 limit = obj.limit
                 turnCount = obj.turnCount
                 lastTurn = obj.lastTurn
@@ -148,26 +148,26 @@ defmodule Othello.Game do
     end
 
     #returns : the rightmost square of the given row higher index
-    def getLastHorizontal(squares, i, higher,limit,turn) do
-        IO.puts("in getlasthori")
-        flag = false
-        if(limit<=higher) do
-            IO.puts("limit less than higher")
-            if(Enum.at(squares,limit) !=turn and Enum.at(squares,limit)!=nil) do
-                IO.puts("in that if")
-                limit = getLastHorizontal(squares,i,higher,limit+1,turn)
-            else
-                if(Enum.at(squares,limit)==turn) do
-                    flag = true
-                end
-            end
-        end
-        if(flag==true) do
-            limit
-        else
-            limit
-        end
-    end
+    #def getLastHorizontal(squares, i, higher,limit,turn) do
+     #   IO.puts("in getlasthori")
+      #  flag = false
+       # if(limit<=higher) do
+        #    IO.puts("limit less than higher")
+         #   if(Enum.at(squares,limit) !=turn and Enum.at(squares,limit)!=nil) do
+          #      IO.puts("in that if")
+           #     limit = getLastHorizontal(squares,i,higher,limit+1,turn)
+            #else
+             #   if(Enum.at(squares,limit)==turn) do
+              #      flag = true
+               # end
+            #end
+        #end
+        #if(flag==true) do
+         #   limit
+        #else
+         #   limit
+        #end
+   # end
 
     def getLastSquareHorizontal(squares,i,turn) do
         row1 = [0,7]
