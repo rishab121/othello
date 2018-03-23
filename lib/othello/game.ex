@@ -667,4 +667,13 @@ defmodule Othello.Game do
             turn: turn
         }   
     end
+    def handlerestart(game) do
+        %{
+            squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
+            score1: 0,
+            score2: 0,
+            turn: 0
+        }
+
+    end
 end

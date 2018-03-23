@@ -43,7 +43,7 @@ defmodule OthelloWeb.GamesChannel do
   #end
   def handle_in("restartFn",%{}, socket) do
     game0 = socket.assigns[:game]
-    game1 = Game.handlerestart(game0)
+    game1 = Othello.Game.handlerestart(game0)
     Othello.GameBackup.save(socket.assigns[:name], game1)
     socket = assign(socket, :game, game1)
     {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
