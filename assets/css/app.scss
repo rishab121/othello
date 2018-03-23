@@ -10,11 +10,6 @@ h1 { text-align: center; }
     content: "";
     display: table;
   }
-  .setfont {
-    font-size: 25px;
-    font-family: 'Times New Roman', Times, serif;
-    font: bold;
-  }
   
   .white {
     display: inline-block;
@@ -33,7 +28,7 @@ h1 { text-align: center; }
   
   .square {
     background: green;
-    border: 1px solid #fff;
+    border: 1px solid brown;
     float: left;
     font-size: 36px;
     font-weight: bold;
