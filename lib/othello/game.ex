@@ -634,6 +634,19 @@ defmodule Othello.Game do
         }
     end
 
+    #def checkDiagonal(squares,i,turn) do
+     #   if(i-9<7 or i+9>63) do
+            #obj = handleDiagonalEdges(squares,i,turn)
+      #      squares = obj.squares
+       #     valid = obj.valid
+        #else
+         #   obj = leftRightDiagonal(squares,i,turn)
+          #  obj = rightLeftDiagonal(obj.squares,i,turn)
+           # squares = obj.squares
+            #valid = obj.valid
+        #end
+    #end
+
     def checkValidMove(squares,i,valid,turn) do
         IO.puts("checkvalidmove")
         check = checkHorizontal(squares,i,valid,turn)
