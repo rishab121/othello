@@ -17,14 +17,11 @@ class Othello extends React.Component{
         .receive("error", resp => { console.log("Unable to join", resp); });
         this.state = {
             squares: Array(64).fill(null),
-            score1: 0,
-            score2: 0,
+            scoreBlack: 0,
+            scoreWhite: 0,
             turn: 0,
         };
         this.channel.on("reload:view", ({game: game}) => {
-          //this.setState(game.game);
-          console.log("yaha pata nahi");
-          console.log(game);
           this.setState(game);
       
         });
@@ -62,8 +59,8 @@ class Othello extends React.Component{
             </div>
           </div>
           <div >
-            <div className="score"><p>Score1 :: {this.state.score1} </p></div>
-            <div className="score"><p>Score2 :: {this.state.score2} </p></div>
+            <div className="score"><p>scoreBlack :: {this.state.scoreBlack} </p></div>
+            <div className="score"><p>scoreWhite :: {this.state.scoreWhite} </p></div>
           </div>
           <div>
             <RestartFunc onClick = {() => this.restartFn()} />
@@ -87,13 +84,13 @@ class Board extends React.Component{
             onClick= {() => this.props.onClick(i)}
           />);
         }
-        else if(value == 1){
+        else if(value == 1){ //render white circle 
           return ( 
             <Squarevalues 
             onClick= {() => this.props.onClick(i)}
           />);
         }
-        else{
+        else{ // render black circles
           return ( 
             <Squarescored 
             onClick= {() => this.props.onClick(i)}
@@ -198,7 +195,7 @@ function Square(props){
 }
 function Squarevalues(props){
   return(
-    <button className="square btn" onClick={props.onClick} >
+    <button className="square-without-hover btn">
     <span className="white"></span>
      </button>
   );
@@ -206,7 +203,7 @@ function Squarevalues(props){
 
 function Squarescored(props){
   return(
-    <button className="square btn"  onClick={props.onClick} >
+    <button className="square-without-hover btn">
     <span className="black"></span>
     </button>
   );

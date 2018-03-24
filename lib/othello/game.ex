@@ -2,8 +2,8 @@ defmodule Othello.Game do
     def new do
         %{
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
-            score1: 0,
-            score2: 0,
+            scoreBlack: 0,
+            scoreWhite: 0,
             turn: 0
         }
 
@@ -12,8 +12,8 @@ defmodule Othello.Game do
     def client_view(game) do
         %{
             squares: game.squares,
-            score1: game.score1,
-            score2: game.score2,
+            scoreBlack: game.scoreBlack,
+            scoreWhite: game.scoreWhite,
             turn: game.turn
         }
     end
@@ -1116,7 +1116,7 @@ defmodule Othello.Game do
 
     def rightLeftDiagonal(squares,i,valid,turn) do
         #AVOIDS ARRAY INDEXING ERROR
-        if(i-7<8 or i+9>63) do
+        if(i-7<8 or i+7>63) do
             obj = handleRightLeftEdges(squares,i,valid,turn)
             squares = obj.squares
             valid = obj.valid
@@ -1170,8 +1170,8 @@ defmodule Othello.Game do
 
     def handleClickByServer(game,i) do
         squares = game.squares
-        score1 = game.score1
-        score2 = game.score2
+        scoreBlack = game.scoreBlack
+        scoreWhite = game.scoreWhite
         turn = game.turn
 
         if(Enum.at(squares,i) == nil) do
@@ -1186,21 +1186,59 @@ defmodule Othello.Game do
         else
             turn = 0
         end
-        
+        scoreBlack = updateBlack(squares)
+        scoreWhite = updateWhite(squares)
         %{
             squares: squares,
-            score1: score1,
-            score2: score2,
+            scoreBlack: scoreBlack,
+            scoreWhite: scoreWhite,
             turn: turn
         }   
     end
     def handlerestart(game) do
         %{
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
-            score1: 0,
-            score2: 0,
+            scoreBlack: 0,
+            scoreWhite: 0,
             turn: 0
         }
 
     end
+    def updateBlack(squares) do
+        count = updateBlackRecur(squares,0,0)
+        IO.puts(count)
+        count
+            
+    end
+    def updateBlackRecur(squares, i,count) do
+        if(i < 64) do
+            if(Enum.at(squares,i) == 0) do
+                updateBlackRecur(squares,i+1,count+1)
+            else
+                updateBlackRecur(squares,i+1,count)
+            end
+        else
+            count
+        end
+    end
+
+    def updateWhite(squares) do
+        count = updateWhiteRecur(squares,0,0)
+        IO.puts(count)
+        count
+            
+    end
+    def updateWhiteRecur(squares, i,count) do
+        if(i < 64) do
+            if(Enum.at(squares,i) == 1) do
+                updateWhiteRecur(squares,i+1,count+1)
+            else
+                updateWhiteRecur(squares,i+1,count)
+            end
+        else
+            count
+        end
+    end
+    
+
 end
