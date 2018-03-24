@@ -1,11 +1,23 @@
 
  <script>
         function displayname(){
-        var tb = document.getElementById('game_name').value
+        //var tb = document.getElementById('game_name').value
         //window.addEventListener("change", myFunction);
-        var a = document.getElementById("a");
-        var st = "games/" + tb;
-        a.setAttribute("href",st);
+        //var a = document.getElementById("a");
+        //var st = "games/" + tb;
+        //a.setAttribute("href",st);
+        }
+
+        function setPlayerName(){
+            console.log("player naaming functoion");
+            var tb = document.getElementById('game_name').value
+            var pn = document.getElementById('player_name').value;
+            var a = document.getElementById("a");
+            var st = "games/" + tb + "/" + pn;
+            a.setAttribute("href",st);
+
+            //window.player_name = pn;
+
         }
 </script>
 <style>
@@ -32,6 +44,8 @@ body {
 </style>
 <body class="relative setfont">
 <h1>Join A Game</h1>
-Enter Name  <input type=text id="game_name" onchange="displayname()"> 
-<a id="a" href="/games/demo"> Go to Game</a>
+Enter Name of game <input type=text id="game_name" onchange="displayname()" required> 
+Enter Player Name <input type=text id="player_name" onchange="setPlayerName()" required>
+
+<a id="a" href=""> Go to Game</a>
 </body>

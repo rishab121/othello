@@ -24,6 +24,7 @@ function init(){
     }
     let channel = socket.channel("games:" + gameName, {});
     // run the function of react here
+   // console.log(player_name);
     run_othello(root, channel)
 }
 

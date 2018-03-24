@@ -1205,10 +1205,7 @@ defmodule Othello.Game do
 
     end
     def updateBlack(squares) do
-        count = updateBlackRecur(squares,0,0)
-        IO.puts(count)
-        count
-            
+        updateBlackRecur(squares,0,0)
     end
     def updateBlackRecur(squares, i,count) do
         if(i < 64) do
@@ -1223,10 +1220,7 @@ defmodule Othello.Game do
     end
 
     def updateWhite(squares) do
-        count = updateWhiteRecur(squares,0,0)
-        IO.puts(count)
-        count
-            
+        updateWhiteRecur(squares,0,0)
     end
     def updateWhiteRecur(squares, i,count) do
         if(i < 64) do
