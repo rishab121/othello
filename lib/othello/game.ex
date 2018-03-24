@@ -866,7 +866,7 @@ defmodule Othello.Game do
 
     def leftRightDiagonal(squares,i,valid,turn) do
         #AVOIDS ARRAY INDEXING ERROR
-        if(i-9<7 or i+9>63) do
+        if(i-9<9 or i+9>63) do
             obj = handleLeftRightEdges(squares,i,valid,turn)
             squares = obj.squares
             valid = obj.valid
@@ -898,10 +898,260 @@ defmodule Othello.Game do
         }
     end
 
+    def handleRightLeftEdges(squares,i,valid,turn) do
+        if(i-7<7) do
+            if(Enum.at(squares,i+1)!=nil) do
+                downLimit = getRightLeftDown(i)
+                limit = i + 7
+                indexObj = getRightLeftDownLast(squares,i,limit,downLimit,turn,0,i)
+                index = indexObj.limit
+                turnCount = indexObj.turnCount
+                lastTurn = indexObj.lastTurn
+                notAllSame = lastTurn - i
+                turnC = turnCount*7
+                if(index==lastTurn and notAllSame != turnC and notAllSame > 7) do
+                    squares = changeRightLeftDown(squares,i,index,turn)
+                    valid = true
+                else
+                    if(lastTurn != i and notAllSame != turnC and notAllSame > 7) do
+                        squares = changeRightLeftDown(squares,i,lastTurn,turn)
+                        valid = true
+                    end
+                end
+            end
+        else
+            if(Enum.at(squares,i-1)!=nil) do
+                upLimit = getRightLeftUp(i)
+                limit = i - 7
+                indexObj = getRightLeftUpFirst(squares,i,limit,upLimit,turn,0,i)
+                index = indexObj.limit
+                turnCount = indexObj.turnCount
+                lastTurn = indexObj.lastTurn
+                notAllSame = i - lastTurn
+                turnC = turnCount*7
+                if(index==lastTurn and notAllSame != turnC and notAllSame > 7) do
+                    squares = changeRightLeftUp(squares,i,index,turn)
+                    valid = true
+                else
+                    if(lastTurn != i and notAllSame != turnC and notAllSame > 7) do
+                        squares = changeRightLeftUp(squares,i,lastTurn,turn)
+                        valid = true
+                    end
+                end
+            end
+        end
+        %{
+            squares: squares,
+            valid: valid
+        }
+    end
+
+    def getRightLeftUp(limit) do
+        if(limit>=7) do
+            limit = getLeftRightUp(limit-7)
+        end
+        limit
+    end
+
+    def getRightLeftUpFirst(squares,i,limit,upLimit,turn,turnCount,lastTurn) do
+        IO.puts("rl up first")
+        IO.puts("limit")
+        IO.puts(limit)
+        IO.puts("upLimit")
+        IO.puts(upLimit)
+        if(limit>=upLimit) do
+            if(Enum.at(squares,limit)!=nil) do
+                if(Enum.at(squares,limit)==turn) do
+                    turnCount = turnCount + 1
+                    lastTurn = limit
+                end
+                obj = getLeftRightUpFirst(squares,i,limit-7,upLimit,turn,turnCount,lastTurn)
+                limit = obj.limit
+                turnCount = obj.turnCount
+                lastTurn = obj.lastTurn
+            end
+        end
+        %{
+            limit: limit,
+            turnCount: turnCount,
+            lastTurn: lastTurn
+        }
+    end
+
+    def changeRightLeftUp(squares,i,upLimit,turn) do
+        if(upLimit<=i) do
+            squares = changeSquareColor(squares,i,turn)
+            squares = changeRightLeftUp(squares,i-7,upLimit,turn)
+        end
+        squares
+    end
+
+    def handleRightLeftUp(squares,i,valid,turn) do
+        IO.puts("hanlde rl up")
+        upLimit = getRightLeftUp(i)
+        limit = i - 7
+        indexObj = getRightLeftUpFirst(squares,i,limit,upLimit,turn,0,i)
+        index = indexObj.limit
+        turnCount = indexObj.turnCount
+        lastTurn = indexObj.lastTurn
+        notAllSame = i - lastTurn
+        turnC = turnCount*7
+        IO.puts("uplimit")
+        IO.puts(upLimit)
+        IO.puts("index")
+        IO.puts(index)
+        IO.puts("lastturn")
+        IO.puts(lastTurn)
+        IO.puts("turn c")
+        IO.puts(turnCount)
+        IO.puts("notallsame")
+        IO.puts(notAllSame)
+        IO.puts("turnC")
+        IO.puts(turnC)
+        if(index==lastTurn and notAllSame != turnC and notAllSame > 7) do
+            squares = changeRightLeftUp(squares,i,index,turn)
+            valid = true
+        else
+            if(lastTurn != i and notAllSame != turnC and notAllSame > 7) do
+                squares = changeRightLeftUp(squares,i,lastTurn,turn)
+                valid = true
+            end
+        end
+        %{
+            squares: squares,
+            valid: valid
+        }
+    end
+
+    def getRightLeftDown(limit) do
+        if(limit<=56) do
+            limit = getRightLeftDown(limit+7)
+        end
+        limit
+    end
+
+    def getRightLeftDownLast(squares,i,limit,downLimit,turn,turnCount,lastTurn) do
+        IO.puts("lr down last")
+        IO.puts("limit")
+        IO.puts(limit)
+        IO.puts("downLimit")
+        IO.puts(downLimit)
+        if(limit<=downLimit) do
+            if(Enum.at(squares,limit)!=nil) do
+                if(Enum.at(squares,limit)==turn) do
+                    turnCount = turnCount + 1
+                    lastTurn = limit
+                end
+                obj = getRightLeftDownLast(squares,i,limit+7,downLimit,turn,turnCount,lastTurn)
+                limit = obj.limit
+                turnCount = obj.turnCount
+                lastTurn = obj.lastTurn
+            end
+        end
+        %{
+            limit: limit,
+            turnCount: turnCount,
+            lastTurn: lastTurn
+        }
+    end
+
+    def changeRightLeftDown(squares,i,downLimit,turn) do
+        if(downLimit>=i) do
+            squares = changeSquareColor(squares,i,turn)
+            squares = changeRightLeftDown(squares,i+7,downLimit,turn)
+        end
+        squares
+    end
+
+    def handleRightLeftDown(squares,i,valid,turn) do
+        IO.puts("hanlde rl down")
+        downLimit = getRightLeftDown(i)
+        IO.puts("down")
+        IO.puts(downLimit)
+        limit = i + 7
+        indexObj = getRightLeftDownLast(squares,i,limit,downLimit,turn,0,i)
+        index = indexObj.limit
+        turnCount = indexObj.turnCount
+        lastTurn = indexObj.lastTurn
+        notAllSame = lastTurn - i
+        turnC = turnCount*7
+        IO.puts("downlimit")
+        IO.puts(downLimit)
+        IO.puts("index")
+        IO.puts(index)
+        IO.puts("lastturn")
+        IO.puts(lastTurn)
+        IO.puts("turn c")
+        IO.puts(turnCount)
+        IO.puts("notallsame")
+        IO.puts(notAllSame)
+        IO.puts("turnC")
+        IO.puts(turnC)
+        if(index==lastTurn and notAllSame != turnC and notAllSame > 7) do
+            squares = changeRightLeftDown(squares,i,index,turn)
+            valid = true
+        else
+            if(lastTurn != i and notAllSame != turnC and notAllSame > 7) do
+                squares = changeRightLeftDown(squares,i,lastTurn,turn)
+                valid = true
+            end
+        end
+        %{
+            squares: squares,
+            valid: valid
+        }
+    end
+
+    def handleRightLeftUpDown(squares,i,valid,turn) do
+        IO.puts("handle right left")
+        obj = handleRightLeftUp(squares,i,valid,turn)
+        obj = handleRightLeftDown(obj.squares,i,obj.valid,turn)
+        squares = obj.squares
+        valid = obj.valid
+        %{
+            squares: squares,
+            valid: valid
+        }
+    end
+
+    def rightLeftDiagonal(squares,i,valid,turn) do
+        #AVOIDS ARRAY INDEXING ERROR
+        if(i-7<8 or i+9>63) do
+            obj = handleRightLeftEdges(squares,i,valid,turn)
+            squares = obj.squares
+            valid = obj.valid
+        else
+            #CHECKS IF SOMETHING IN RIGHT-LEFT UP SQUARE AND NOTHING IN RIGHT-LEFT DOWN
+            if(Enum.at(squares,i-7)!=nil and Enum.at(squares,i+7)==nil) do
+                obj = handleRightLeftUp(squares,i,valid,turn)
+                squares = obj.squares
+                valid = obj.valid
+            else
+                #CHECKS IF SOMETHING IN RIGHT-LEFT DOWN SQUARE AND NOTHING IN RIGHT-LEFT UP
+                if(Enum.at(squares,i-7)==nil and Enum.at(squares,i+7)!=nil) do
+                    obj = handleRightLeftDown(squares,i,valid,turn)
+                    squares = obj.squares
+                    valid = obj.valid
+                else
+                    #CHECKS IF SOMETHING IN RIGHT-LEFT UP AND DOWN DIRECTION
+                    if(Enum.at(squares,i-7)!=nil and Enum.at(squares,i+7)!=nil) do
+                        obj = handleRightLeftUpDown(squares,i,valid,turn)
+                        squares = obj.squares
+                        valid = obj.valid
+                    end
+                end
+            end
+        end
+        %{
+            squares: squares,
+            valid: valid
+        }
+    end
+
     def checkDiagonal(squares,i,valid,turn) do
         IO.puts("in check digonal")
         obj = leftRightDiagonal(squares,i,valid,turn)
-        #obj = rightLeftDiagonal(obj.squares,i,obj.valid,turn)
+        obj = rightLeftDiagonal(obj.squares,i,obj.valid,turn)
         squares = obj.squares
         valid = obj.valid
         %{
