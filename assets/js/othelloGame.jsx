@@ -21,7 +21,7 @@ class Othello extends React.Component{
             scoreWhite: 0,
             turn: 0,
         };
-        this.channel.on("reload:view", ({game: game}) => {
+        this.channel.on("reload:view", game => {
           this.setState(game);
       
         });
