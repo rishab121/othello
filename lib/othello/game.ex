@@ -2,8 +2,8 @@ defmodule Othello.Game do
     def new do
         %{
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
-            scoreBlack: 0,
-            scoreWhite: 0,
+            scoreBlack: 2,
+            scoreWhite: 2,
             turn: 0
         }
 
