@@ -17,7 +17,10 @@ defmodule Othello.Game do
             squares: game.squares,
             scoreBlack: game.scoreBlack,
             scoreWhite: game.scoreWhite,
-            turn: game.turn
+            turn: game.turn,
+            playerBlack: game.playerBlack,
+            playerWhite: game.playerWhite,
+            observers: game.observers
         }
     end
 
@@ -482,7 +485,6 @@ defmodule Othello.Game do
     #          down direction or both up and down direction vertically if 
     #          the move is valid
     def checkVertical(squares,i,valid,turn) do
-        IO.puts("in checkverti")
         #AVOIDS ARRAY INDEXING ERROR
         if(i<8 or i>63) do
             obj = handleFirstLastRow(squares,i,turn)
@@ -491,14 +493,12 @@ defmodule Othello.Game do
         else
             #CHECKS WHEN NOTHING DOWN BUT SOMETHING UP
             if(Enum.at(squares,i-8) !=nil and Enum.at(squares,i+8) == nil) do
-                IO.puts("should not be here")
                 obj = handleOnlyUp(squares,i,turn)
                 squares = obj.squares
                 valid = obj.valid
             else
                 #WHEN NOTHING UP BUT SOMETHING DOWN
                 if(Enum.at(squares,i-8) ==nil and Enum.at(squares,i+8) != nil) do
-                    IO.puts("should handle down")
                     obj = handleOnlyDown(squares,i,turn)
                     squares = obj.squares
                     valid = obj.valid
@@ -518,46 +518,19 @@ defmodule Othello.Game do
         }
     end
 
+    #Avoids array indexing error
     def handleLeftRightEdges(squares,i,valid,turn) do
         if(i+9>63) do
             if(Enum.at(squares,i-9)!=nil) do
-                upLimit = getLeftRightUp(i)
-                limit = i - 9
-                indexObj = getLeftRightUpFirst(squares,i,limit,upLimit,turn,0,i)
-                index = indexObj.limit
-                turnCount = indexObj.turnCount
-                lastTurn = indexObj.lastTurn
-                notAllSame = i - lastTurn
-                turnC = turnCount*9
-                if(index==lastTurn and notAllSame != turnC and notAllSame > 9) do
-                    squares = changeLeftRightUp(squares,i,index,turn)
-                    valid = true
-                else
-                    if(lastTurn != i and notAllSame != turnC and notAllSame > 9) do
-                        squares = changeLeftRightUp(squares,i,lastTurn,turn)
-                        valid = true
-                    end
-                end
+                obj = handleLeftRightUp(squares,i,turn)
+                squares = obj.squares
+                valid = obj.valid
             end
         else
             if(Enum.at(squares,i+9)!=nil) do
-                downLimit = getLeftRightDown(i)
-                limit = i + 9
-                indexObj = getLeftRightDownLast(squares,i,limit,downLimit,turn,0,i)
-                index = indexObj.limit
-                turnCount = indexObj.turnCount
-                lastTurn = indexObj.lastTurn
-                notAllSame = lastTurn - i
-                turnC = turnCount*9
-                if(index==lastTurn and notAllSame != turnC and notAllSame > 9) do
-                    squares = changeLeftRightDown(squares,i,index,turn)
-                    valid = true
-                else
-                    if(lastTurn != i and notAllSame != turnC and notAllSame > 9) do
-                        squares = changeLeftRightDown(squares,i,lastTurn,turn)
-                        valid = true
-                    end
-                end
+                obj = handleLeftRightDown(squares,i,turn)
+                squares = obj.squares
+                valid = obj.valid
             end
         end
         %{
@@ -566,6 +539,7 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : index of the top-most square of the LEFT-RIGHT diagonal
     def getLeftRightUp(limit) do
         if(limit>=9) do
             limit = getLeftRightUp(limit-9)
@@ -574,11 +548,6 @@ defmodule Othello.Game do
     end
 
     def getLeftRightUpFirst(squares,i,limit,upLimit,turn,turnCount,lastTurn) do
-        IO.puts("lr up first")
-        IO.puts("limit")
-        IO.puts(limit)
-        IO.puts("upLimit")
-        IO.puts(upLimit)
         if(limit>=upLimit) do
             if(Enum.at(squares,limit)!=nil) do
                 if(Enum.at(squares,limit)==turn) do
@@ -598,6 +567,7 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : squares with value changed to turn's color
     def changeLeftRightUp(squares,i,upLimit,turn) do
         if(upLimit<=i) do
             squares = changeSquareColor(squares,i,turn)
@@ -607,7 +577,6 @@ defmodule Othello.Game do
     end
 
     def handleLeftRightUp(squares,i,valid,turn) do
-        IO.puts("hanlde lr up")
         upLimit = getLeftRightUp(i)
         limit = i - 9
         indexObj = getLeftRightUpFirst(squares,i,limit,upLimit,turn,0,i)
@@ -616,18 +585,6 @@ defmodule Othello.Game do
         lastTurn = indexObj.lastTurn
         notAllSame = i - lastTurn
         turnC = turnCount*9
-        IO.puts("uplimit")
-        IO.puts(upLimit)
-        IO.puts("index")
-        IO.puts(index)
-        IO.puts("lastturn")
-        IO.puts(lastTurn)
-        IO.puts("turn c")
-        IO.puts(turnCount)
-        IO.puts("notallsame")
-        IO.puts(notAllSame)
-        IO.puts("turnC")
-        IO.puts(turnC)
         if(index==lastTurn and notAllSame != turnC and notAllSame > 9) do
             squares = changeLeftRightUp(squares,i,index,turn)
             valid = true
@@ -643,6 +600,7 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : index of the bottom-most square of the LEFT-RIGHT diagonal
     def getLeftRightDown(limit) do
         if(limit<=54) do
             limit = getLeftRightDown(limit+9)
@@ -651,11 +609,6 @@ defmodule Othello.Game do
     end
 
     def getLeftRightDownLast(squares,i,limit,downLimit,turn,turnCount,lastTurn) do
-        IO.puts("lr down last")
-        IO.puts("limit")
-        IO.puts(limit)
-        IO.puts("downLimit")
-        IO.puts(downLimit)
         if(limit<=downLimit) do
             if(Enum.at(squares,limit)!=nil) do
                 if(Enum.at(squares,limit)==turn) do
@@ -675,6 +628,7 @@ defmodule Othello.Game do
         }
     end
 
+     #RETURNS : squares with value changed to turn's color
     def changeLeftRightDown(squares,i,downLimit,turn) do
         if(downLimit>=i) do
             squares = changeSquareColor(squares,i,turn)
@@ -684,10 +638,7 @@ defmodule Othello.Game do
     end
 
     def handleLeftRightDown(squares,i,valid,turn) do
-        IO.puts("hanlde lr down")
         downLimit = getLeftRightDown(i)
-        IO.puts("down")
-        IO.puts(downLimit)
         limit = i + 9
         indexObj = getLeftRightDownLast(squares,i,limit,downLimit,turn,0,i)
         index = indexObj.limit
@@ -695,18 +646,6 @@ defmodule Othello.Game do
         lastTurn = indexObj.lastTurn
         notAllSame = lastTurn - i
         turnC = turnCount*9
-        IO.puts("downlimit")
-        IO.puts(downLimit)
-        IO.puts("index")
-        IO.puts(index)
-        IO.puts("lastturn")
-        IO.puts(lastTurn)
-        IO.puts("turn c")
-        IO.puts(turnCount)
-        IO.puts("notallsame")
-        IO.puts(notAllSame)
-        IO.puts("turnC")
-        IO.puts(turnC)
         if(index==lastTurn and notAllSame != turnC and notAllSame > 9) do
             squares = changeLeftRightDown(squares,i,index,turn)
             valid = true
@@ -722,6 +661,8 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : squares with values changed to color from i in both up and 
+    #          down direction of diagonal LEFT-RIGHT if the move is valid
     def handleLeftRightUpDown(squares,i,valid,turn) do
         obj = handleLeftRightUp(squares,i,valid,turn)
         obj = handleLeftRightDown(obj.squares,i,obj.valid,turn)
@@ -733,6 +674,9 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : squares with values changed to color from i in up direction or
+    #          down direction or up and down direction of diagonal LEFT-RIGHT 
+    #          if the move is valid    
     def leftRightDiagonal(squares,i,valid,turn) do
         #AVOIDS ARRAY INDEXING ERROR
         if(i-9<9 or i+9>63) do
@@ -815,6 +759,7 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : index of the top-most square of the RIGHT-LEFT diagonal
     def getRightLeftUp(limit) do
         if(limit>=7) do
             limit = getLeftRightUp(limit-7)
@@ -823,11 +768,6 @@ defmodule Othello.Game do
     end
 
     def getRightLeftUpFirst(squares,i,limit,upLimit,turn,turnCount,lastTurn) do
-        IO.puts("rl up first")
-        IO.puts("limit")
-        IO.puts(limit)
-        IO.puts("upLimit")
-        IO.puts(upLimit)
         if(limit>=upLimit) do
             if(Enum.at(squares,limit)!=nil) do
                 if(Enum.at(squares,limit)==turn) do
@@ -847,6 +787,7 @@ defmodule Othello.Game do
         }
     end
 
+     #RETURNS : squares with value changed to turn's color
     def changeRightLeftUp(squares,i,upLimit,turn) do
         if(upLimit<=i) do
             squares = changeSquareColor(squares,i,turn)
@@ -856,7 +797,6 @@ defmodule Othello.Game do
     end
 
     def handleRightLeftUp(squares,i,valid,turn) do
-        IO.puts("hanlde rl up")
         upLimit = getRightLeftUp(i)
         limit = i - 7
         indexObj = getRightLeftUpFirst(squares,i,limit,upLimit,turn,0,i)
@@ -865,18 +805,6 @@ defmodule Othello.Game do
         lastTurn = indexObj.lastTurn
         notAllSame = i - lastTurn
         turnC = turnCount*7
-        IO.puts("uplimit")
-        IO.puts(upLimit)
-        IO.puts("index")
-        IO.puts(index)
-        IO.puts("lastturn")
-        IO.puts(lastTurn)
-        IO.puts("turn c")
-        IO.puts(turnCount)
-        IO.puts("notallsame")
-        IO.puts(notAllSame)
-        IO.puts("turnC")
-        IO.puts(turnC)
         if(index==lastTurn and notAllSame != turnC and notAllSame > 7) do
             squares = changeRightLeftUp(squares,i,index,turn)
             valid = true
@@ -892,6 +820,7 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : index of the bottom-most square of the RIGHT-LEFT diagonal
     def getRightLeftDown(limit) do
         if(limit<=56) do
             limit = getRightLeftDown(limit+7)
@@ -900,11 +829,6 @@ defmodule Othello.Game do
     end
 
     def getRightLeftDownLast(squares,i,limit,downLimit,turn,turnCount,lastTurn) do
-        IO.puts("lr down last")
-        IO.puts("limit")
-        IO.puts(limit)
-        IO.puts("downLimit")
-        IO.puts(downLimit)
         if(limit<=downLimit) do
             if(Enum.at(squares,limit)!=nil) do
                 if(Enum.at(squares,limit)==turn) do
@@ -924,6 +848,7 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : squares with value changed to turn's color
     def changeRightLeftDown(squares,i,downLimit,turn) do
         if(downLimit>=i) do
             squares = changeSquareColor(squares,i,turn)
@@ -932,11 +857,10 @@ defmodule Othello.Game do
         squares
     end
 
+    #RETURNS : squares with values changed to color from i in down 
+    #          direction of diagonal RIGHT-LEFT if the move is valid
     def handleRightLeftDown(squares,i,valid,turn) do
-        IO.puts("hanlde rl down")
         downLimit = getRightLeftDown(i)
-        IO.puts("down")
-        IO.puts(downLimit)
         limit = i + 7
         indexObj = getRightLeftDownLast(squares,i,limit,downLimit,turn,0,i)
         index = indexObj.limit
@@ -944,18 +868,6 @@ defmodule Othello.Game do
         lastTurn = indexObj.lastTurn
         notAllSame = lastTurn - i
         turnC = turnCount*7
-        IO.puts("downlimit")
-        IO.puts(downLimit)
-        IO.puts("index")
-        IO.puts(index)
-        IO.puts("lastturn")
-        IO.puts(lastTurn)
-        IO.puts("turn c")
-        IO.puts(turnCount)
-        IO.puts("notallsame")
-        IO.puts(notAllSame)
-        IO.puts("turnC")
-        IO.puts(turnC)
         if(index==lastTurn and notAllSame != turnC and notAllSame > 7) do
             squares = changeRightLeftDown(squares,i,index,turn)
             valid = true
@@ -971,8 +883,9 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : squares with values changed to color from i in both up and 
+    #          down direction of diagonal RIGHT-LEFT if the move is valid
     def handleRightLeftUpDown(squares,i,valid,turn) do
-        IO.puts("handle right left")
         obj = handleRightLeftUp(squares,i,valid,turn)
         obj = handleRightLeftDown(obj.squares,i,obj.valid,turn)
         squares = obj.squares
@@ -983,6 +896,9 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : squares with values changed to turn's color from i in up direction or
+    #          down direction or up and down direction of diagonal RIGHT-LEFT 
+    #          if the move is valid  
     def rightLeftDiagonal(squares,i,valid,turn) do
         #AVOIDS ARRAY INDEXING ERROR
         if(i-7<8 or i+7>63) do
@@ -1017,8 +933,10 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : squares with values changed to turn's color from i in up direction or
+    #          down direction or up and down direction of diagonal RIGHT-LEFT 
+    #          and LEFT-RIGHT if the move is valid 
     def checkDiagonal(squares,i,valid,turn) do
-        IO.puts("in check digonal")
         obj = leftRightDiagonal(squares,i,valid,turn)
         obj = rightLeftDiagonal(obj.squares,i,obj.valid,turn)
         squares = obj.squares
@@ -1029,11 +947,10 @@ defmodule Othello.Game do
         }
     end
 
+    #RETURNS : squares with values changed to turn's color, if the move is valid 
     def checkValidMove(squares,i,valid,turn) do
-        IO.puts("checkvalidmove")
         check = checkHorizontal(squares,i,valid,turn)
         check = checkVertical(check.squares,i,check.valid,turn)
-        IO.puts("back to checl valid")
         check = checkDiagonal(check.squares,i,check.valid,turn)
     end
 
@@ -1042,14 +959,12 @@ defmodule Othello.Game do
         scoreBlack = game.scoreBlack
         scoreWhite = game.scoreWhite
         turn = game.turn
-
         if(Enum.at(squares,i) == nil) do
             valid = false
             obj = checkValidMove(squares,i,valid,turn)
             squares = obj.squares
             
         end
-
         if(turn == 0) do
             turn = 1
         else
@@ -1068,6 +983,7 @@ defmodule Othello.Game do
         }   
     end
 
+    #RETURNS : game with all values set same as new game
     def handlerestart(game) do
         %{
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
@@ -1112,7 +1028,11 @@ defmodule Othello.Game do
             count
         end
     end
-    
+
+    #RETURNS : a game with playerName updated. If playerBlack is nil,
+    #          it is updated with playerName. If playerWhite is nil,
+    #          it is updated with playerName. Else playerName is added 
+    #          ro observers list.    
     def addNewPlayer(game, playerName) do
         playerBlack = game.playerBlack
         playerWhite = game.playerWhite
