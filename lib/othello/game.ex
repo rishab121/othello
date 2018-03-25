@@ -4,7 +4,10 @@ defmodule Othello.Game do
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
             scoreBlack: 2,
             scoreWhite: 2,
-            turn: 0
+            turn: 0,
+            playerBlack: nil,
+            playerWhite: nil,
+            observers: []
         }
 
     end
@@ -1058,15 +1061,22 @@ defmodule Othello.Game do
             squares: squares,
             scoreBlack: scoreBlack,
             scoreWhite: scoreWhite,
-            turn: turn
+            turn: turn,
+            playerBlack: game.playerBlack,
+            playerWhite: game.playerWhite,
+            observers: game.observers
         }   
     end
+
     def handlerestart(game) do
         %{
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
             scoreBlack: 0,
             scoreWhite: 0,
-            turn: 0
+            turn: 0,
+            playerBlack: nil,
+            playerWhite: nil,
+            observers: []
         }
 
     end
@@ -1090,6 +1100,7 @@ defmodule Othello.Game do
     def updateWhite(squares) do
         updateWhiteRecur(squares,0,0)
     end
+
     def updateWhiteRecur(squares, i,count) do
         if(i < 64) do
             if(Enum.at(squares,i) == 1) do
@@ -1102,5 +1113,29 @@ defmodule Othello.Game do
         end
     end
     
+    def addNewPlayer(game, playerName) do
+        playerBlack = game.playerBlack
+        playerWhite = game.playerWhite
+        observers = game.observers
+        if(playerBlack==nil) do
+            playerBlack = playerName
+        else
+            if(playerWhite == nil) do
+                playerWhite = playerName
+            else
+                observer = [playerName]
+                observers = observers++observer
+            end
+        end
+        %{
+            squares: game.squares,
+            scoreBlack: game.scoreBlack,
+            scoreWhite: game.scoreWhite,
+            turn: game.turn,
+            playerBlack: playerBlack,
+            playerWhite: playerWhite,
+            observers: observers
+        } 
+    end
 
 end

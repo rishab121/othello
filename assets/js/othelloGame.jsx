@@ -23,7 +23,7 @@ class Othello extends React.Component{
             turn: 0,
             playerWhite: null,
             playerBlack: null,
-            observors: []
+            observers: []
 
         };
         this.channel.on("reload:view", game => {
