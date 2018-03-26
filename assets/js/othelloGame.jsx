@@ -126,14 +126,15 @@ class Othello extends React.Component{
                     onClick = {(i) => this.handleClick(i)}
                 />
             </div>
-          </div>
-          <div >
-            <div className="score"><p>Score Black :: {this.state.scoreBlack} </p></div>
-            <div className="score"><p>Score White :: {this.state.scoreWhite} </p></div>
-            <div className="score"><p>Player Black :: {this.state.playerBlack} </p></div>
-            <div className="score"><p>Player White :: {this.state.playerWhite} </p></div>
+          
+          <div className="scorecard">
+            <h3 id="scoreTitle">Score Card</h3>
+            <span className="black-large"><p>{this.state.scoreBlack}</p></span>
+            <div className="score"><p>{this.state.playerBlack} </p></div>
+            <span className="white-large"><p> {this.state.scoreWhite}</p></span>
+            <div className="score"><p>{this.state.playerWhite} </p></div>
             <div className="score"><p>Current Turn  :: {this.state.cturn} </p></div>
-
+          </div>
           </div>
           <div>
             <RestartFunc onClick = {() => this.restartFn()} />

@@ -26,26 +26,41 @@ body {
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
-        background-size: cover;
+        background-size: cover; 
+        
+
+    /* Center and scale the image nicely */
+    
 
 }
 .relative {
     position: fixed;
-    left: 600px;
-    top: 500px;
+    left: 300px;
+    top: 530px; 
+    text-align: center;
 }
 .setfont {
     font-size: 25px;
     font-family: 'Times New Roman', Times, serif;
-    font: bold;
+    font-weight: bold;
+    color: #dc3545;
     
+}
+.game-button {
+    position: fixed;
+    top:600px;
+    left:750px;
+    text-align: center;
+   
 }
 
 </style>
-<body class="relative setfont">
-<h1>Join A Game</h1>
-Enter Name of game <input type=text id="game_name" onchange="displayname()" required> 
-Enter Player Name <input type=text id="player_name" onchange="setPlayerName()" required>
-
-<a id="a" href=""> Go to Game</a>
+<body>
+<div class="setfont relative">
+Enter Name of Game <input type=text id="game_name" onchange="displayname()" required> 
+Enter Your Name <input type=text id="player_name" onchange="setPlayerName()" required>
+</div>
+<div class="game-button">
+<a id="a" class= "btn btn-lg  btn-danger" href="" center> Play Game!!</a>
+</div>
 </body>
