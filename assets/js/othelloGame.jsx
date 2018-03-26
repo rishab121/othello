@@ -28,7 +28,7 @@ class Othello extends React.Component{
             playerWhite: null,
             playerBlack: null,
             observers: [],
-            cturn: null
+            cturn: ""
         };
         this.channel.on("reload:view", game => {
           this.setState(game);
@@ -117,7 +117,6 @@ class Othello extends React.Component{
     }
     render() {
         const current = this.state.squares;
-        console.log(this.cTurn);
         return (
         <div>
           <div className="game">
@@ -129,11 +128,11 @@ class Othello extends React.Component{
             </div>
           </div>
           <div >
-            <div className="score"><p>scoreBlack :: {this.state.scoreBlack} </p></div>
-            <div className="score"><p>scoreWhite :: {this.state.scoreWhite} </p></div>
+            <div className="score"><p>Score Black :: {this.state.scoreBlack} </p></div>
+            <div className="score"><p>Score White :: {this.state.scoreWhite} </p></div>
             <div className="score"><p>Player Black :: {this.state.playerBlack} </p></div>
-            <div className="score"><p>player White :: {this.state.playerWhite} </p></div>
-            <div className="score"><p>curren Turn  :: {this.state.cTurn} </p></div>
+            <div className="score"><p>Player White :: {this.state.playerWhite} </p></div>
+            <div className="score"><p>Current Turn  :: {this.state.cturn} </p></div>
 
           </div>
           <div>

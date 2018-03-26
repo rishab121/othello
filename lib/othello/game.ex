@@ -7,7 +7,8 @@ defmodule Othello.Game do
             turn: 0,
             playerBlack: nil,
             playerWhite: nil,
-            observers: []
+            observers: [],
+            cturn: ""
         }
 
     end
@@ -20,7 +21,8 @@ defmodule Othello.Game do
             turn: game.turn,
             playerBlack: game.playerBlack,
             playerWhite: game.playerWhite,
-            observers: game.observers
+            observers: game.observers,
+            cturn: game.cturn
         }
     end
 
@@ -951,6 +953,7 @@ defmodule Othello.Game do
         scoreBlack = game.scoreBlack
         scoreWhite = game.scoreWhite
         turn = game.turn
+        cturn = game.cturn
         if(Enum.at(squares,i) == nil) do
             valid = false
             obj = checkValidMove(squares,i,valid,turn)
@@ -959,8 +962,10 @@ defmodule Othello.Game do
         end
         if(turn == 0) do
             turn = 1
+            cturn = game.playerWhite
         else
             turn = 0
+            cturn = game.playerBlack
         end
         scoreBlack = updateBlack(squares)
         scoreWhite = updateWhite(squares)
@@ -971,7 +976,8 @@ defmodule Othello.Game do
             turn: turn,
             playerBlack: game.playerBlack,
             playerWhite: game.playerWhite,
-            observers: game.observers
+            observers: game.observers,
+            cturn: cturn
         }   
     end
 
@@ -984,7 +990,8 @@ defmodule Othello.Game do
             turn: 0,
             playerBlack: nil,
             playerWhite: nil,
-            observers: []
+            observers: [],
+            cturn: ""
         }
 
     end
@@ -1033,15 +1040,13 @@ defmodule Othello.Game do
         playerBlack = game.playerBlack
         playerWhite = game.playerWhite
         observers = game.observers
-        IO.puts("before changing")
-        IO.puts(playerBlack)
-        IO.puts(playerWhite)
-        IO.puts(playerName)
+        cturn = game.cturn
         if(playerBlack == nil) do
             playerBlack = playerName
         else
             if(playerBlack != nil and playerWhite == nil) do
                 playerWhite = playerName
+                cturn = playerBlack
             else
                 if(playerBlack != nil and playerWhite != nil) do
                     observer = [playerName]
@@ -1049,10 +1054,6 @@ defmodule Othello.Game do
                 end
             end
         end
-        IO.puts("after changing")
-        IO.puts(playerBlack)
-        IO.puts(playerWhite)
-        IO.puts(playerName)
         %{
             squares: game.squares,
             scoreBlack: game.scoreBlack,
@@ -1060,7 +1061,8 @@ defmodule Othello.Game do
             turn: game.turn,
             playerBlack: playerBlack,
             playerWhite: playerWhite,
-            observers: observers
+            observers: observers,
+            cturn: cturn
         } 
     end
 
