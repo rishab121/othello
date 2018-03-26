@@ -976,7 +976,7 @@ defmodule Othello.Game do
     end
 
     #RETURNS : game with all values set same as new game
-    def handlerestart(game) do
+    def handleRestart(game) do
         %{
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
             scoreBlack: 0,
