@@ -1043,6 +1043,7 @@ defmodule Othello.Game do
         cturn = game.cturn
         if(playerBlack == nil) do
             playerBlack = playerName
+            cturn = "Waiting for player White to join the game."
         else
             if(playerBlack != nil and playerWhite == nil) do
                 playerWhite = playerName
