@@ -22,7 +22,7 @@
 </script>
 <style>
 body {
-        background: url("/images/othello.jpeg") no-repeat center center fixed; 
+        background: url("/images/othello2.jpg") no-repeat center top fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
