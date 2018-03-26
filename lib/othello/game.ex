@@ -721,6 +721,7 @@ defmodule Othello.Game do
         }
     end
 
+    #Avoids array indexing error
     def handleRightLeftEdges(squares,i,valid,turn) do
         if(i-7<7) do
             if(Enum.at(squares,i+7)!=nil) do
@@ -749,6 +750,9 @@ defmodule Othello.Game do
         limit
     end
 
+    #RETURNS : limit - the index at which the first square from top of RIGHT-LEFT diagonal has a circle
+    #          turnCount - number of squares which have circle of turn's color
+    #          lastTurn - the last square (going up) which has turn's color
     def getRightLeftUpFirst(squares,i,limit,upLimit,turn,turnCount,lastTurn) do
         if(limit>=upLimit) do
             if(Enum.at(squares,limit)!=nil) do
@@ -778,6 +782,8 @@ defmodule Othello.Game do
         squares
     end
 
+    #RETURNS : squares with values changed to color from i in up 
+    #          direction of diagonal RIGHT-LEFT if the move is valid
     def handleRightLeftUp(squares,i,valid,turn) do
         upLimit = getRightLeftUp(i)
         limit = i - 7
@@ -810,6 +816,9 @@ defmodule Othello.Game do
         limit
     end
 
+    #RETURNS : limit - the index at which the first square from bottom of RIGHT-LEFT diagonal has a circle
+    #          turnCount - number of squares which have circle of turn's color
+    #          lastTurn - the last square (going down) which has turn's color
     def getRightLeftDownLast(squares,i,limit,downLimit,turn,turnCount,lastTurn) do
         if(limit<=downLimit) do
             if(Enum.at(squares,limit)!=nil) do
@@ -936,6 +945,7 @@ defmodule Othello.Game do
         check = checkDiagonal(check.squares,i,check.valid,turn)
     end
 
+    #RETURNS : squares with values changed to turn's color, if the move is valid
     def handleClickByServer(game,i) do
         squares = game.squares
         scoreBlack = game.scoreBlack
@@ -979,10 +989,12 @@ defmodule Othello.Game do
 
     end
 
+    #RETURNS : count of black squares
     def updateBlack(squares) do
         updateBlackRecur(squares,0,0)
     end
 
+    #RETURNS : count of black squares
     def updateBlackRecur(squares, i,count) do
         if(i < 64) do
             if(Enum.at(squares,i) == 0) do
@@ -995,10 +1007,12 @@ defmodule Othello.Game do
         end
     end
 
+    #RETURNS : count of white squares
     def updateWhite(squares) do
         updateWhiteRecur(squares,0,0)
     end
 
+    #RETURNS : count of white squares
     def updateWhiteRecur(squares, i,count) do
         if(i < 64) do
             if(Enum.at(squares,i) == 1) do
