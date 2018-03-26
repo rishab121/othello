@@ -522,13 +522,13 @@ defmodule Othello.Game do
     def handleLeftRightEdges(squares,i,valid,turn) do
         if(i+9>63) do
             if(Enum.at(squares,i-9)!=nil) do
-                obj = handleLeftRightUp(squares,i,turn)
+                obj = handleLeftRightUp(squares,i,valid,turn)
                 squares = obj.squares
                 valid = obj.valid
             end
         else
             if(Enum.at(squares,i+9)!=nil) do
-                obj = handleLeftRightDown(squares,i,turn)
+                obj = handleLeftRightDown(squares,i,valid,turn)
                 squares = obj.squares
                 valid = obj.valid
             end
@@ -547,6 +547,9 @@ defmodule Othello.Game do
         limit
     end
 
+    #RETURNS : limit - the index at which the first square from top of LEFT-RIGHT diagonal has a circle
+    #          turnCount - number of squares which have circle of turn's color
+    #          lastTurn - the last square (going up) which has turn's color
     def getLeftRightUpFirst(squares,i,limit,upLimit,turn,turnCount,lastTurn) do
         if(limit>=upLimit) do
             if(Enum.at(squares,limit)!=nil) do
@@ -576,6 +579,8 @@ defmodule Othello.Game do
         squares
     end
 
+    #RETURNS : squares with values changed to color from i in up 
+    #          direction of diagonal LEFT-RIGHT if the move is valid
     def handleLeftRightUp(squares,i,valid,turn) do
         upLimit = getLeftRightUp(i)
         limit = i - 9
@@ -608,6 +613,9 @@ defmodule Othello.Game do
         limit
     end
 
+    #RETURNS : limit - the index at which the first square from bottom of LEFT-RIGHT diagonal has a circle
+    #          turnCount - number of squares which have circle of turn's color
+    #          lastTurn - the last square (going down) which has turn's color
     def getLeftRightDownLast(squares,i,limit,downLimit,turn,turnCount,lastTurn) do
         if(limit<=downLimit) do
             if(Enum.at(squares,limit)!=nil) do
@@ -637,6 +645,8 @@ defmodule Othello.Game do
         squares
     end
 
+    #RETURNS : squares with values changed to color from i in down 
+    #          direction of diagonal LEFT-RIGHT if the move is valid
     def handleLeftRightDown(squares,i,valid,turn) do
         downLimit = getLeftRightDown(i)
         limit = i + 9
