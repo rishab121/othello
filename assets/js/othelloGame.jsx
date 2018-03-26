@@ -103,7 +103,7 @@ class Othello extends React.Component{
     }
     handleClickByServer(i){
       //console.log("yaha aaay");
-      this.channel.push("handleClickByServer",{num:i })
+      this.channel.push("handleClickByServer",{num:i, player_name: playerName })
           .receive("ok", this.gotView.bind(this))
 
     }

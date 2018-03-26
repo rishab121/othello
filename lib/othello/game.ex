@@ -985,13 +985,13 @@ defmodule Othello.Game do
     def handleRestart(game) do
         %{
             squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
-            scoreBlack: 0,
-            scoreWhite: 0,
+            scoreBlack: 2,
+            scoreWhite: 2,
             turn: 0,
-            playerBlack: nil,
-            playerWhite: nil,
-            observers: [],
-            cturn: ""
+            playerBlack: game.playerBlack,
+            playerWhite: game.playerWhite,
+            observers: game.observers,
+            cturn: game.playerBlack
         }
 
     end

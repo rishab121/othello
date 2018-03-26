@@ -29,16 +29,20 @@ defmodule OthelloWeb.GamesChannel do
     {:noreply, socket}
   end
 
-  def handle_in("handleClickByServer", %{"num" => num}, socket) do
-     game0 = Othello.GameBackup.load(socket.assigns[:name])
-     if(game0 == nil) do
-       game0 = Othello.Game.new()
-     end
-     game = Othello.Game.handleClickByServer(game0,num)
-     Othello.GameBackup.save(socket.assigns[:name], game)
-     socket = assign(socket, :game, game)
-     broadcast socket, "reload:view", game
-     {:reply, {:ok, %{ "game" => Othello.Game.client_view(game)}}, socket}
+  def handle_in("handleClickByServer", %{"num" => num, "player_name" => player_name}, socket) do
+    game0 = Othello.GameBackup.load(socket.assigns[:name])
+    if(game0 == nil) do
+      game0 = Othello.Game.new()
+    end
+    if(game0.cturn == player_name) do
+      game = Othello.Game.handleClickByServer(game0,num)
+      Othello.GameBackup.save(socket.assigns[:name], game)
+      socket = assign(socket, :game, game)
+      broadcast socket, "reload:view", game
+      {:reply, {:ok, %{ "game" => Othello.Game.client_view(game)}}, socket}
+    else
+      {:reply, {:ok, %{ "game" => Othello.Game.client_view(game0)}}, socket}
+    end  
   end
 
   def handle_in("player:joined", %{"player_name" => player_name},socket) do
