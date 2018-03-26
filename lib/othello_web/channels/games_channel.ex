@@ -2,12 +2,13 @@ defmodule OthelloWeb.GamesChannel do
   use OthelloWeb, :channel
 
   def join("games:"<> name, payload, socket) do
+    IO.puts("join mein aaya")
     game = Othello.GameBackup.load(name) || Othello.Game.new()
     socket = socket
     |> assign(:game, game)
     |> assign(:name, name)
 
-    broadcast socket, "player:joined", game
+   # send(self, {:after_join})
     if authorized?(payload) do
       {:ok, %{"game" => Othello.Game.client_view(game)}, socket}
     else
@@ -41,12 +42,22 @@ defmodule OthelloWeb.GamesChannel do
   end
 
   def handle_in("player:joined", %{"player_name" => player_name},socket) do
+    IO.puts("player:joined mein aaya ");
     game0 = Othello.GameBackup.load(socket.assigns[:name])
+    if(game0 == nil) do
+      game0 = Othello.Game.new()
+    end
     game = Othello.Game.addNewPlayer(game0, player_name)
     Othello.GameBackup.save(socket.assigns[:name], game)
     socket = assign(socket, :game, game)
-   # broadcast socket, "reload:view", game
+    broadcast socket, "reload:view", game
     {:reply, {:ok, %{ "game" => Othello.Game.client_view(game)}}, socket}
+    
+    
+   
+    
+   # broadcast socket, "reload:view", game
+    
   end
   #def handle_in("handleTimeOut", %{"game" => game}, socket) do
   #  game0 = socket.assigns[:game]
@@ -67,11 +78,12 @@ defmodule OthelloWeb.GamesChannel do
   defp authorized?(_payload) do
     true
   end
-  def handle_info({:after_click}, socket) do
+  def handle_info({:after_join}, socket) do
+    IO.puts("handle info mein aaya")
     game = Othello.GameBackup.load(:name)
     #Memory.GameBackup.save(socket.assigns[:name], game)
     #IO.puts("click func")
-    broadcast socket, "reload:view", %{game: game}
+    #broadcast socket, "player:entered", %{game: game}
     {:noreply, socket}
   end
 

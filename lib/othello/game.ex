@@ -1019,6 +1019,10 @@ defmodule Othello.Game do
         playerBlack = game.playerBlack
         playerWhite = game.playerWhite
         observers = game.observers
+        IO.puts("before changing")
+        IO.puts(playerBlack)
+        IO.puts(playerWhite)
+        IO.puts(playerName)
         if(playerBlack == nil) do
             playerBlack = playerName
         else
@@ -1031,6 +1035,10 @@ defmodule Othello.Game do
                 end
             end
         end
+        IO.puts("after changing")
+        IO.puts(playerBlack)
+        IO.puts(playerWhite)
+        IO.puts(playerName)
         %{
             squares: game.squares,
             scoreBlack: game.scoreBlack,

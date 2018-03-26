@@ -13,9 +13,13 @@ class Othello extends React.Component{
         super(props);
        // console.log(playerName);
         this.channel = props.channel;
+        console.log("calling join");
+        console.log("player name is "+ playerName);
         this.channel.join()
         .receive("ok", this.gotView.bind(this))
         .receive("error", resp => { console.log("Unable to join", resp); });
+        this.channel.push("player:joined", {player_name: playerName})
+        .receive("ok", this.gotView.bind(this))
         this.state = {
             squares: Array(64).fill(null),
             scoreBlack: 2,
@@ -30,44 +34,48 @@ class Othello extends React.Component{
           this.setState(game);
       
         });
-        this.channel.on("player:joined",game =>{
-            // if(game.playerBlack == null){
-            //   this.setState({
-            //     squares: game.squares,
-            //     scoreBlack: game.scoreBlack,
-            //     scoreWhite: game.scoreWhite,
-            //     turn: game.turn,
-            //     playerWhite: game.playerWhite,
-            //     playerBlack: playerName,
-            //     observors: game.observors
-            //   })
-            // }
-            // else if(game.playerWhite == null){
-            //   this.setState({
-            //     squares: game.squares,
-            //     scoreBlack: game.scoreBlack,
-            //     scoreWhite: game.scoreWhite,
-            //     turn: game.turn,
-            //     playerWhite: playerName,
-            //     playerBlack: game.playerBlack,
-            //     observors: game.observors
-            //   })
-            // }
-            // else{
-            //   this.setState({
-            //     squares: game.squares,
-            //     scoreBlack: game.scoreBlack,
-            //     scoreWhite: game.scoreWhite,
-            //     turn: game.turn,
-            //     playerWhite: game.playerWhite,
-            //     playerBlack: game.playerBlack,
-            //     observors: game.observors + [playerName]
-            //   })
-            // }
-            this.channel.push("player:joined", {player_name: playerName})
-            .receive("ok", this.gotView.bind(this))
+        // this.channel.on("player:entered",game =>{
 
-        })
+        //   console.log("player:entered mein aaya ");
+        //   console.log("player name is "+ playerName);
+          
+        //     // if(game.playerBlack == null){
+        //     //   this.setState({
+        //     //     squares: game.squares,
+        //     //     scoreBlack: game.scoreBlack,
+        //     //     scoreWhite: game.scoreWhite,
+        //     //     turn: game.turn,
+        //     //     playerWhite: game.playerWhite,
+        //     //     playerBlack: playerName,
+        //     //     observors: game.observors
+        //     //   })
+        //     // }
+        //     // else if(game.playerWhite == null){
+        //     //   this.setState({
+        //     //     squares: game.squares,
+        //     //     scoreBlack: game.scoreBlack,
+        //     //     scoreWhite: game.scoreWhite,
+        //     //     turn: game.turn,
+        //     //     playerWhite: playerName,
+        //     //     playerBlack: game.playerBlack,
+        //     //     observors: game.observors
+        //     //   })
+        //     // }
+        //     // else{
+        //     //   this.setState({
+        //     //     squares: game.squares,
+        //     //     scoreBlack: game.scoreBlack,
+        //     //     scoreWhite: game.scoreWhite,
+        //     //     turn: game.turn,
+        //     //     playerWhite: game.playerWhite,
+        //     //     playerBlack: game.playerBlack,
+        //     //     observors: game.observors + [playerName]
+        //     //   })
+        //     // }
+        //     this.channel.push("player:joined", {player_name: playerName})
+        //     .receive("ok", this.gotView.bind(this))
+
+        // })
     }
    
 
@@ -122,6 +130,8 @@ class Othello extends React.Component{
           <div >
             <div className="score"><p>scoreBlack :: {this.state.scoreBlack} </p></div>
             <div className="score"><p>scoreWhite :: {this.state.scoreWhite} </p></div>
+            <div className="score"><p>Player Black :: {this.state.playerBlack} </p></div>
+            <div className="score"><p>player White :: {this.state.playerWhite} </p></div>
           </div>
           <div>
             <RestartFunc onClick = {() => this.restartFn()} />
