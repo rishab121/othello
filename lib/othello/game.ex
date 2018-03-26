@@ -723,44 +723,16 @@ defmodule Othello.Game do
 
     def handleRightLeftEdges(squares,i,valid,turn) do
         if(i-7<7) do
-            if(Enum.at(squares,i+1)!=nil) do
-                downLimit = getRightLeftDown(i)
-                limit = i + 7
-                indexObj = getRightLeftDownLast(squares,i,limit,downLimit,turn,0,i)
-                index = indexObj.limit
-                turnCount = indexObj.turnCount
-                lastTurn = indexObj.lastTurn
-                notAllSame = lastTurn - i
-                turnC = turnCount*7
-                if(index==lastTurn and notAllSame != turnC and notAllSame > 7) do
-                    squares = changeRightLeftDown(squares,i,index,turn)
-                    valid = true
-                else
-                    if(lastTurn != i and notAllSame != turnC and notAllSame > 7) do
-                        squares = changeRightLeftDown(squares,i,lastTurn,turn)
-                        valid = true
-                    end
-                end
+            if(Enum.at(squares,i+7)!=nil) do
+                obj = handleRightLeftDown(squares,i,valid,turn)
+                squares = obj.squares
+                valid = obj.valid
             end
         else
-            if(Enum.at(squares,i-1)!=nil) do
-                upLimit = getRightLeftUp(i)
-                limit = i - 7
-                indexObj = getRightLeftUpFirst(squares,i,limit,upLimit,turn,0,i)
-                index = indexObj.limit
-                turnCount = indexObj.turnCount
-                lastTurn = indexObj.lastTurn
-                notAllSame = i - lastTurn
-                turnC = turnCount*7
-                if(index==lastTurn and notAllSame != turnC and notAllSame > 7) do
-                    squares = changeRightLeftUp(squares,i,index,turn)
-                    valid = true
-                else
-                    if(lastTurn != i and notAllSame != turnC and notAllSame > 7) do
-                        squares = changeRightLeftUp(squares,i,lastTurn,turn)
-                        valid = true
-                    end
-                end
+            if(Enum.at(squares,i-7)!=nil) do
+                obj = handleRightLeftUp(squares,i,valid,turn)
+                squares = obj.squares
+                valid = obj.valid
             end
         end
         %{
@@ -797,7 +769,7 @@ defmodule Othello.Game do
         }
     end
 
-     #RETURNS : squares with value changed to turn's color
+    #RETURNS : squares with value changed to turn's color
     def changeRightLeftUp(squares,i,upLimit,turn) do
         if(upLimit<=i) do
             squares = changeSquareColor(squares,i,turn)
@@ -1047,14 +1019,16 @@ defmodule Othello.Game do
         playerBlack = game.playerBlack
         playerWhite = game.playerWhite
         observers = game.observers
-        if(playerBlack==nil) do
+        if(playerBlack == nil) do
             playerBlack = playerName
         else
-            if(playerWhite == nil) do
+            if(playerBlack != nil and playerWhite == nil) do
                 playerWhite = playerName
             else
-                observer = [playerName]
-                observers = observers++observer
+                if(playerBlack != nil and playerWhite != nil) do
+                    observer = [playerName]
+                    observers = observers++observer
+                end
             end
         end
         %{
