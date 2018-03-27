@@ -47,14 +47,22 @@
 <%= for game <- Othello.GameBackup.getAll() do %>
   <tr>
         <td><%= game %></td>
-        <td><%= Othello.GameBackup.load(game).playerBlack %></td>
+       
+        <%= if Othello.GameBackup.load(game).playerBlack == nil do %>
+            <td><%= "slot empty" %></td>
+        <%= else %>
+            <td><%= Othello.GameBackup.load(game).playerBlack %></td>
+         <% end%>    
         <%= if Othello.GameBackup.load(game).playerWhite == nil do %>
             <td><%= "slot empty" %></td>
-            <td><a id="b" class= "btn btn  btn-primary" href="" center onclick="this.href = '/games/' + '<%= game %>' + '/' + '<%= @player_name %>'" > Join Game as Player!!</a></td>
         <%= else %>
             <td><%= Othello.GameBackup.load(game).playerWhite %></td>
-            <td><a id="b" class= "btn btn  btn-primary" href="" center onclick="this.href = '/games/' + '<%= game %>' + '/' + '<%= @player_name %>'"> Join Game as Observer!!</a></td>
-        <% end%>
+        <% end %>        
+        <%= if Othello.GameBackup.load(game).playerWhite == nil or Othello.GameBackup.load(game).playerBlack == nil do %>
+            <td><a id="b" class= "btn btn-success" href="" center onclick="this.href = '/games/' + '<%= game %>' + '/' + '<%= @player_name %>'" > Join Game as Player!!</a></td>
+        <%= else %>    
+            <td><a id="b" class= "btn btn-primary" href="" center onclick="this.href = '/games/' + '<%= game %>' + '/' + '<%= @player_name %>'"> Join Game as Observer!!</a></td>
+        <% end %>
   </tr>
 <% end %>
   </tbody>

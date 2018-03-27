@@ -31,6 +31,17 @@ class Othello extends React.Component{
           this.setState(game);
       
         });
+        this.channel.on("reload:view:restart", view => {
+          if(view.game.playerWhite == view.player_name){
+            alert("Game restarted!!" + " " + view.game.playerBlack + " wins!!");
+          }
+          if(view.game.playerBlack == view.player_name){
+            alert("Game restarted!!" + " " + view.game.playerWhite + " " + "Wins!!");
+          }
+    
+          this.setState(view.game);
+      
+        });
     }
    
 
@@ -71,22 +82,24 @@ class Othello extends React.Component{
        this.handleClickByServer(i); 
     }
     restartFn(){
-      if(this.state.playerWhite == playerName){
-        alert(this.state.playerBlack + " wins!!");
+      var x  = confirm("are you sure?");
+      if(x){
+        this.channel.push("restartFn",{player_name: playerName})
+        .receive("ok",this.gotView.bind(this))
       }
-      if(this.state.playerBlack == playerName){
-        alert(this.state.playerWhite + " " + "Wins!!");
-      }
-
-      this.channel.push("restartFn",{player_name: playerName})
-      .receive("ok",this.gotView.bind(this))
+     
+      
   
     }
     quitFn(){
-      this.channel.push("quitFn",{player_name: playerName})
-      .receive("ok",this.gotView.bind(this))
+      var x  = confirm("are you sure?");
+      if(x){
+        this.channel.push("quitFn",{player_name: playerName})
+        .receive("ok",this.gotView.bind(this))
+  
+        window.setTimeout(function(){ window.location = "http://localhost:4000/table/" + playerName; },500);
+      }
       
-      window.setTimeout(function(){ window.location = "http://localhost:4000/table/" + playerName; },500);
     }
     render() {
         const current = this.state.squares;
@@ -107,7 +120,7 @@ class Othello extends React.Component{
             <span className="white-large"><p> {this.state.scoreWhite}</p></span>
             <div className="score"><p>{this.state.playerWhite} </p></div>
             <div className="score"><p>Current Turn  :: {this.state.cturn} </p></div>
-            <div> <RestartFunc onClick = {() => this.restartFn()} /> </div>
+            <div> <RestartFunc onClick = {() => this.restartFn()} /> </div><br /> 
             <div> <QuitFunc onClick = {() => this.quitFn()} /> </div>
           </div>
           </div>
@@ -259,7 +272,7 @@ function Squarescored(props){
 
 function RestartFunc(props){
   return(
-    <button className="btn btn-lg btn-primary btn" onClick={props.onClick} >
+    <button className="btn btn-lg btn-dark btn" onClick={props.onClick} >
     Restart Game!
      </button>
   );
@@ -267,7 +280,7 @@ function RestartFunc(props){
 
 function QuitFunc(props){
   return(
-    <button className="btn btn-lg btn-danger btn" onClick={props.onClick} >
+    <button className="btn btn-lg btn-danger " onClick={props.onClick} >
     Quit Game!
      </button>
   );
