@@ -2,8 +2,16 @@
       window.gameName = "<%= @game_name %>";
       window.playerName = "<%= @player_name %>";
 </script> 
+<style>
+  .scroll-table{
+    height: 200px !important;
+    overflow: scroll;
+
+  }
+</style>
 <h1>Game Session Name: <%= @game_name %> </h1>
 <h2>Joined as: <%= @player_name %> </h1>
 <div id="game">
   Loading...
 </div>
+<br>

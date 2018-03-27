@@ -123,6 +123,19 @@ h1 { text-align: center; }
     text-align: center;
   
   }
+  .scorecard2{
+    float: left;
+    margin-left: 40px;
+    height:200px;
+    width:700px;
+    background: gray;
+    border: 3px solid green;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 34px;
+    text-align: center;
+  
+  }
   .game {
     display: flex;
     flex-direction: row;
@@ -132,4 +145,13 @@ h1 { text-align: center; }
   }
   body{
     background: lightgray;
+  }
+  .scroll-table{
+    height: 200px !important;
+    overflow: scroll;
+    width: 84%;
+
+  }
+  .center{
+    text-align: center;
   }
