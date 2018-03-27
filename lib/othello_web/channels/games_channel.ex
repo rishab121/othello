@@ -37,7 +37,7 @@ defmodule OthelloWeb.GamesChannel do
       game = Othello.Game.handleClickByServer(game0,num)
       Othello.GameBackup.save(socket.assigns[:name], game)
       socket = assign(socket, :game, game)
-      broadcast socket, "reload:view", game
+      broadcast socket, "reload:view:click", %{game: game}
       {:reply, {:ok, %{ "game" => Othello.Game.client_view(game)}}, socket}
     else
       {:reply, {:ok, %{ "game" => Othello.Game.client_view(game0)}}, socket}
@@ -53,7 +53,7 @@ defmodule OthelloWeb.GamesChannel do
     game = Othello.Game.addNewPlayer(game0, player_name)
     Othello.GameBackup.save(socket.assigns[:name], game)
     socket = assign(socket, :game, game)
-    broadcast socket, "reload:view", game
+    broadcast socket, "reload:view:joined", %{game: game}
     {:reply, {:ok, %{ "game" => Othello.Game.client_view(game)}}, socket}
 
     
@@ -83,11 +83,21 @@ defmodule OthelloWeb.GamesChannel do
     game1 = Othello.Game.handleQuit(game0,player_name)
     Othello.GameBackup.save(socket.assigns[:name], game1)
     socket = assign(socket, :game, game1)
-    broadcast socket, "reload:view", game1
+    broadcast socket, "reload:view:quit",%{game: game1, player_name: player_name}
     {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
   
   end
-
+  def handle_in("restartNormal",%{}, socket) do
+    game0 = Othello.GameBackup.load(socket.assigns[:name])
+    if(game0 == nil) do
+      game0 = Othello.Game.new()
+    end
+    game1 = Othello.Game.handleRestart(game0)
+    Othello.GameBackup.save(socket.assigns[:name], game1)
+    socket = assign(socket, :game, game1)
+    broadcast socket, "reload:view:joined", %{game: game1}
+    {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
+  end
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true

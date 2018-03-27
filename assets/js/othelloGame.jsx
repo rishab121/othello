@@ -27,11 +27,36 @@ class Othello extends React.Component{
             observers: [],
             cturn: ""
         };
-        this.channel.on("reload:view", game => {
+        this.channel.on("reload:view:click", view => {
           this.setState(game);
+          const score1 = view.game.scoreWhite;
+          const score2 = view.game.scoreBlack;
+          if(score1+score2 == 64){
+            if(score1 > score2){
+              alert("White Wins");
+            }
+            else if(score2 > score1){
+              alert("Black Wins");
+            }
+            else{
+              alert("match ties click restart to play again");
+            }
+          }
+          if(score1 == 0){
+            alert(view.game.playerBlack + "wins");
+            alert("Restarting Game");
+            this.restartNormal(); // change this
+          }
+          if(score2 == 0){
+            alert(view.game.playerWhite + "wins");
+            alert("Restarting Game");
+            this.restartNormal(); //change this
+          }
+         
       
         });
         this.channel.on("reload:view:restart", view => {
+          this.setState(view.game);
           if(view.game.playerWhite == view.player_name){
             alert("Game restarted!!" + " " + view.game.playerBlack + " wins!!");
           }
@@ -39,6 +64,16 @@ class Othello extends React.Component{
             alert("Game restarted!!" + " " + view.game.playerWhite + " " + "Wins!!");
           }
     
+          
+      
+        });
+        this.channel.on("reload:view:quit", view => {
+          this.setState(view.game);
+          alert(view.player_name + " left the game!");
+         
+      
+        });
+        this.channel.on("reload:view:joined", view => {
           this.setState(view.game);
       
         });
@@ -47,29 +82,6 @@ class Othello extends React.Component{
 
     gotView(view){
       this.setState(view.game);
-      const score1 = view.game.scoreWhite;
-      const score2 = view.game.scoreBlack;
-      if(score1+score2 == 64){
-        if(score1 > score2){
-          alert("White Wins");
-        }
-        else if(score2 > score1){
-          alert("Black Wins");
-        }
-        else{
-          alert("match ties click restart to play again");
-        }
-      }
-      if(this.state.scoreWhite==0){
-        alert(view.game.playerBlack + "wins");
-        alert("Restarting Game");
-        this.restartFn();
-      }
-      if(this.state.scoreBlack==0){
-        alert(view.game.playerWhite + "wins");
-        alert("Restarting Game");
-        this.restartFn();
-      }
     }
     handleClickByServer(i){
      
@@ -87,9 +99,10 @@ class Othello extends React.Component{
         this.channel.push("restartFn",{player_name: playerName})
         .receive("ok",this.gotView.bind(this))
       }
-     
-      
-  
+    }
+    restartNormal(){
+      this.channel.push("restartNormal",{})
+      .receive("ok",this.gotView.bind(this))
     }
     quitFn(){
       var x  = confirm("are you sure?");

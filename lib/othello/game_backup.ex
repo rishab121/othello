@@ -21,5 +21,10 @@ defmodule Othello.GameBackup do
         Map.keys(state)
       end
     end
+    def delete(name) do
+      Agent.get_and_update __MODULE__, fn state ->
+        Map.pop(state,name)
+      end
+    end
      
 end 
