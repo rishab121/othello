@@ -83,7 +83,7 @@ defmodule OthelloWeb.GamesChannel do
     game1 = Othello.Game.handleQuit(game0,player_name)
     Othello.GameBackup.save(socket.assigns[:name], game1)
     socket = assign(socket, :game, game1)
-    broadcast socket, "reload:view:quit",%{game: game1, player_name: player_name}
+    broadcast socket, "reload:view:quit",%{game: game1, player_name: player_name, game0: game0}
     {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
   
   end

@@ -71,14 +71,9 @@ class Othello extends React.Component{
     
     this.channel.on("reload:view:quit", view => {
       this.setState(view.game);
-      var pl = false;
-      if(view.player_name == view.game.playerBlack || view.player_name == view.game.playerWhite){
-        pl = true;
-      }
-      if(pl){
-        if(playerName != view.player_name){
-          alert(view.player_name + " left the game!");
-        }
+      console.log("yaha aaya")
+      if(playerName != view.player_name && (view.player_name == view.game0.playerBlack || view.player_name == view.game0.playerWhite)){
+        alert(view.player_name + " left the game!");
       }
       
     });
