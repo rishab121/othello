@@ -10,10 +10,10 @@
 
         function setPlayerName(){
             console.log("player naaming functoion");
-            var tb = document.getElementById('game_name').value
+
             var pn = document.getElementById('player_name').value;
             var a = document.getElementById("a");
-            var st = "games/" + tb + "/" + pn;
+            var st = "table/" + pn;
             a.setAttribute("href",st);
 
             //window.player_name = pn;
@@ -29,7 +29,7 @@
 </script>
 <style>
 body {
-      /*  background: url("/images/othello2.jpg") no-repeat center top fixed; 
+        background: url("/images/othello2.jpg") no-repeat center top fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -42,8 +42,8 @@ body {
 }
 .relative {
     position: fixed;
-    left: 300px;
-    top: 530px; 
+    top:520px;
+    left:550px;
     text-align: center;
 }
 .setfont {
@@ -55,41 +55,17 @@ body {
 }
 .game-button {
     position: fixed;
-    top:600px;
-    left:750px;
+    top:590px;
+    left:800px;
     text-align: center;
    
 }
 
 </style>
-<div class="setfont relative">
-Enter Name of Game <input type=text id="game_name" onchange="displayname()" required> 
+<div class="setfont relative" center>
 Enter Your Name <input type=text id="player_name" onchange="setPlayerName()" required>
 </div>
 <div class="game-button">
-<a id="a" class= "btn btn-lg  btn-danger" href="" center> Play Game!!</a>
+<a id="a" class= "btn btn-lg  btn-danger" href="" center> Game Lobby!!</a>
 </div>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Game Name</th>
-      <th>First Player </th>
-      <th>Second Player </th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for game <- Othello.GameBackup.getAll() do %>
-  <tr>
-        <td><%= game %></td>
-        <td><%= Othello.GameBackup.load(game).playerBlack %></td>
-        <%= if Othello.GameBackup.load(game).playerWhite == nil do %>
-            <td><%= "slot empty" %></td>
-            <td><a id="b" class= "btn btn-lg  btn-danger" href= "<%= "games/" + game %>"  center onclick="setName()"> Join Game as Player!!</a></td>
-        <%= else %>
-            <td><%= Othello.GameBackup.load(game).playerWhite %></td>
-            <td><a id="b" class= "btn btn-lg  btn-danger" href="" center onclick="setName(<%= game %>)"> Join Game as Observor!!</a></td>
-        <% end%>
-  </tr>
-<% end %>
-  </tbody>
-</table>
+

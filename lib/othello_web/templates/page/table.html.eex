@@ -1,0 +1,69 @@
+<script>
+     function displayname(){
+        var tb = document.getElementById('game_name').value
+        var a = document.getElementById("a");
+        var st = "/games/" + tb + "/" + "<%= @player_name %>";
+        a.setAttribute("href",st);
+    }
+</script>
+<style>
+.relative {
+    position: fixed;
+    top:520px;
+    left:550px;
+    text-align: center;
+}
+.setfont {
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    text-align: center;
+
+
+    
+}
+.game-button {
+    position: fixed;
+    top:640px;
+    left:800px;
+    text-align: center;
+   
+}
+
+</style>
+<h1 class="setfont"> Join a Game </h1>
+
+
+<table class="table table-striped table-dark table-hover">
+  <thead>
+    <tr>
+      <th>Game Name</th>
+      <th>First Player </th>
+      <th>Second Player </th>
+      <th>Handle </th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for game <- Othello.GameBackup.getAll() do %>
+  <tr>
+        <td><%= game %></td>
+        <td><%= Othello.GameBackup.load(game).playerBlack %></td>
+        <%= if Othello.GameBackup.load(game).playerWhite == nil do %>
+            <td><%= "slot empty" %></td>
+            <td><a id="b" class= "btn btn  btn-primary" href="" center onclick="this.href = '/games/' + '<%= game %>' + '/' + '<%= @player_name %>'" > Join Game as Player!!</a></td>
+        <%= else %>
+            <td><%= Othello.GameBackup.load(game).playerWhite %></td>
+            <td><a id="b" class= "btn btn  btn-primary" href="" center onclick="this.href = '/games/' + '<%= game %>' + '/' + '<%= @player_name %>'"> Join Game as Observer!!</a></td>
+        <% end%>
+  </tr>
+<% end %>
+  </tbody>
+</table>
+<br>
+<br>
+<div class="setfont">
+<p> Create New Game </p> 
+Enter Name of Game <input type=text id="game_name" onchange="displayname()" required> <br>
+<br>
+<a id="a" class= "btn btn-lg btn-danger" href="" center> Join Game!!</a>
+</div>

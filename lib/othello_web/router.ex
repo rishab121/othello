@@ -18,6 +18,7 @@ defmodule OthelloWeb.Router do
 
     get "/", PageController, :index
     get "/games/:game_name/:player_name", PageController, :game
+    get "/table/:player_name", PageController, :table
   end
 
   # Other scopes may use custom stacks.
