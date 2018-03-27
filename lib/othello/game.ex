@@ -96,7 +96,6 @@ defmodule Othello.Game do
             lower = Enum.at(row8,0)
             indexObj = getFirstHorizontal(squares, i,lower,limit,turn,0,i)
         end
-        IO.puts(index)
         indexObj
     end
 
@@ -522,7 +521,7 @@ defmodule Othello.Game do
 
     #Avoids array indexing error
     def handleLeftRightEdges(squares,i,valid,turn) do
-        if(i+9>63) do
+        if(i>54) do
             if(Enum.at(squares,i-9)!=nil) do
                 obj = handleLeftRightUp(squares,i,valid,turn)
                 squares = obj.squares
@@ -691,7 +690,7 @@ defmodule Othello.Game do
     #          if the move is valid    
     def leftRightDiagonal(squares,i,valid,turn) do
         #AVOIDS ARRAY INDEXING ERROR
-        if(i-9<9 or i+9>63) do
+        if(i<9 or i>54) do
             obj = handleLeftRightEdges(squares,i,valid,turn)
             squares = obj.squares
             valid = obj.valid
@@ -725,7 +724,7 @@ defmodule Othello.Game do
 
     #Avoids array indexing error
     def handleRightLeftEdges(squares,i,valid,turn) do
-        if(i-7<7) do
+        if(i<7) do
             if(Enum.at(squares,i+7)!=nil) do
                 obj = handleRightLeftDown(squares,i,valid,turn)
                 squares = obj.squares
@@ -762,7 +761,7 @@ defmodule Othello.Game do
                     turnCount = turnCount + 1
                     lastTurn = limit
                 end
-                obj = getLeftRightUpFirst(squares,i,limit-7,upLimit,turn,turnCount,lastTurn)
+                obj = getRightLeftUpFirst(squares,i,limit-7,upLimit,turn,turnCount,lastTurn)
                 limit = obj.limit
                 turnCount = obj.turnCount
                 lastTurn = obj.lastTurn
@@ -894,7 +893,7 @@ defmodule Othello.Game do
     #          if the move is valid  
     def rightLeftDiagonal(squares,i,valid,turn) do
         #AVOIDS ARRAY INDEXING ERROR
-        if(i-7<8 or i+7>63) do
+        if(i<7 or i>56) do
             obj = handleRightLeftEdges(squares,i,valid,turn)
             squares = obj.squares
             valid = obj.valid
@@ -1043,7 +1042,7 @@ defmodule Othello.Game do
         cturn = game.cturn
         if(playerBlack == nil) do
             playerBlack = playerName
-            cturn = "Waiting for player White to join the game."
+            cturn = "Waiting for player White to join the game"
         else
             if(playerBlack != nil and playerWhite == nil) do
                 playerWhite = playerName
