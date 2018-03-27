@@ -71,7 +71,19 @@ class Othello extends React.Component{
        this.handleClickByServer(i); 
     }
     restartFn(){
-      this.channel.push("restartFn",{})
+      if(this.state.playerWhite == playerName){
+        alert(this.state.playerBlack + " wins!!");
+      }
+      if(this.state.playerBlack == playerName){
+        alert(this.state.playerWhite + " " + "Wins!!");
+      }
+
+      this.channel.push("restartFn",{player_name: playerName})
+      .receive("ok",this.gotView.bind(this))
+  
+    }
+    quitFn(){
+      this.channel.push("quitFn",{player_name: playerName})
       .receive("ok",this.gotView.bind(this))
     }
     render() {
@@ -93,10 +105,11 @@ class Othello extends React.Component{
             <span className="white-large"><p> {this.state.scoreWhite}</p></span>
             <div className="score"><p>{this.state.playerWhite} </p></div>
             <div className="score"><p>Current Turn  :: {this.state.cturn} </p></div>
+            <div> <RestartFunc onClick = {() => this.restartFn()} /> </div>
+            <div> <QuitFunc onClick = {() => this.quitFn()} /> </div>
           </div>
           </div>
           <div>
-            <RestartFunc onClick = {() => this.restartFn()} />
             <a className="btn btn-primary btn-lg github" href="https://github.com/rishab121/othello" target="_blank">
               Github Link
             </a>
@@ -244,8 +257,16 @@ function Squarescored(props){
 
 function RestartFunc(props){
   return(
-    <button className="btn btn-danger btn-lg" onClick={props.onClick} >
-    Restart
+    <button className="btn btn-lg btn-primary btn" onClick={props.onClick} >
+    Restart Game!
+     </button>
+  );
+}
+
+function QuitFunc(props){
+  return(
+    <button className="btn btn-lg btn-danger btn" onClick={props.onClick} >
+    Quit Game!
      </button>
   );
 }

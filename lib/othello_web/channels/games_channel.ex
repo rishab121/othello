@@ -8,7 +8,6 @@ defmodule OthelloWeb.GamesChannel do
     |> assign(:game, game)
     |> assign(:name, name)
 
-   # send(self, {:after_join})
     if authorized?(payload) do
       {:ok, %{"game" => Othello.Game.client_view(game)}, socket}
     else
@@ -59,33 +58,39 @@ defmodule OthelloWeb.GamesChannel do
 
     
   end
-  #def handle_in("handleTimeOut", %{"game" => game}, socket) do
-  #  game0 = socket.assigns[:game]
-  #  game1 = Game.handleTimeOut(game0)
-  #  Othello.GameBackup.save(socket.assigns[:name], game1)
-  #  socket = assign(socket, :game, game1)
-   # {:reply, {:ok, %{"game" => Game.client_view(game1)}}, socket}
-  #end
-  def handle_in("restartFn",%{}, socket) do
+ 
+  def handle_in("restartFn",%{"player_name" => player_name}, socket) do
     game0 = Othello.GameBackup.load(socket.assigns[:name])
-    game1 = Othello.Game.handleRestart(game0)
+    if(game0 == nil) do
+      game0 = Othello.Game.new()
+    end
+    if(player_name == game0.playerWhite or player_name == game0.playerBlack) do
+      game1 = Othello.Game.handleRestart(game0)
+      Othello.GameBackup.save(socket.assigns[:name], game1)
+      socket = assign(socket, :game, game1)
+      broadcast socket, "reload:view", game1
+      {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
+    else
+      {:reply, {:ok, %{"game" => Othello.Game.client_view(game0)}}, socket}
+    end
+  end
+
+  def handle_in("quitFn",%{"player_name" => player_name}, socket) do
+    game0 = Othello.GameBackup.load(socket.assigns[:name])
+    if(game0 == nil) do
+      game0 = Othello.Game.new()
+    end
+    game1 = Othello.Game.handleQuit(game0,player_name)
     Othello.GameBackup.save(socket.assigns[:name], game1)
     socket = assign(socket, :game, game1)
     broadcast socket, "reload:view", game1
     {:reply, {:ok, %{"game" => Othello.Game.client_view(game1)}}, socket}
+  
   end
 
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true
-  end
-  def handle_info({:after_join}, socket) do
-    IO.puts("handle info mein aaya")
-    game = Othello.GameBackup.load(:name)
-    #Memory.GameBackup.save(socket.assigns[:name], game)
-    #IO.puts("click func")
-    #broadcast socket, "player:entered", %{game: game}
-    {:noreply, socket}
   end
 
 end
