@@ -69,9 +69,16 @@ class Othello extends React.Component{
         });
         this.channel.on("reload:view:quit", view => {
           this.setState(view.game);
-          if(playerName != view.player_name){
-            alert(view.player_name + " left the game!");
+          var pl = false;
+          if(view.player_name == view.game.playerBlack || view.player_name == view.game.playerWhite){
+              pl = true;
           }
+          if(pl){
+            if(playerName != view.player_name){
+              alert(view.player_name + " left the game!");
+            }
+          }
+          
          
       
         });
@@ -118,6 +125,10 @@ class Othello extends React.Component{
     }
     render() {
         const current = this.state.squares;
+        var pl = false;
+        if(playerName == this.state.playerBlack || playerName == this.state.playerWhite){
+            pl = true;
+        }
         return (
         <div>
           <div className="game">
@@ -135,7 +146,7 @@ class Othello extends React.Component{
             <span className="white-large"><p> {this.state.scoreWhite}</p></span>
             <div className="score"><p>{this.state.playerWhite} </p></div>
             <div className="score"><p>Current Turn  :: {this.state.cturn} </p></div>
-            <div> <RestartFunc onClick = {() => this.restartFn()} /> </div><br /> 
+            <div> <RestartFunc onClick = {() => this.restartFn()} pl ={pl} /> </div><br /> 
             <div> <QuitFunc onClick = {() => this.quitFn()} /> </div>
           </div>
           </div>
@@ -173,7 +184,7 @@ class Board extends React.Component{
           />);
         }
           
-      }
+    }
 
     render(){
         return (
@@ -286,11 +297,21 @@ function Squarescored(props){
 }
 
 function RestartFunc(props){
-  return(
-    <button className="btn btn-lg btn-dark btn" onClick={props.onClick} >
-    Restart Game!
-     </button>
-  );
+  
+  if(props.pl){
+    return(
+      <button className="btn btn-lg btn-dark btn" onClick={props.onClick} >
+      Restart Game!
+      </button>
+    );
+  }
+  else{
+    return(
+      <button className="btn btn-lg btn-dark btn" disabled>
+      Restart Game!
+       </button>
+    );
+  }
 }
 
 function QuitFunc(props){
