@@ -85,6 +85,8 @@ class Othello extends React.Component{
     quitFn(){
       this.channel.push("quitFn",{player_name: playerName})
       .receive("ok",this.gotView.bind(this))
+      
+      window.setTimeout(function(){ window.location = "http://localhost:4000/table/" + playerName; },500);
     }
     render() {
         const current = this.state.squares;
@@ -110,7 +112,7 @@ class Othello extends React.Component{
           </div>
           </div>
           <div>
-            <a className="btn btn-primary btn-lg github" href="https://github.com/rishab121/othello" target="_blank">
+            <a className="btn btn-primary btn-lg" href="https://github.com/rishab121/othello" target="_blank">
               Github Link
             </a>
           </div>
