@@ -19,10 +19,17 @@
             //window.player_name = pn;
 
         }
+    function setName(gamename){
+      console.log("called mf");
+      var pn = document.getElementById('player_name').value;
+      var b = document.getElementById("b")
+      var st = "games/" + gamename + "/" + pn;
+      b.setAttribute("href",st);
+  }
 </script>
 <style>
 body {
-        background: url("/images/othello2.jpg") no-repeat center top fixed; 
+      /*  background: url("/images/othello2.jpg") no-repeat center top fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -55,7 +62,6 @@ body {
 }
 
 </style>
-<body>
 <div class="setfont relative">
 Enter Name of Game <input type=text id="game_name" onchange="displayname()" required> 
 Enter Your Name <input type=text id="player_name" onchange="setPlayerName()" required>
@@ -63,4 +69,27 @@ Enter Your Name <input type=text id="player_name" onchange="setPlayerName()" req
 <div class="game-button">
 <a id="a" class= "btn btn-lg  btn-danger" href="" center> Play Game!!</a>
 </div>
-</body>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Game Name</th>
+      <th>First Player </th>
+      <th>Second Player </th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for game <- Othello.GameBackup.getAll() do %>
+  <tr>
+        <td><%= game %></td>
+        <td><%= Othello.GameBackup.load(game).playerBlack %></td>
+        <%= if Othello.GameBackup.load(game).playerWhite == nil do %>
+            <td><%= "slot empty" %></td>
+            <td><a id="b" class= "btn btn-lg  btn-danger" href= "<%= "games/" + game %>"  center onclick="setName()"> Join Game as Player!!</a></td>
+        <%= else %>
+            <td><%= Othello.GameBackup.load(game).playerWhite %></td>
+            <td><a id="b" class= "btn btn-lg  btn-danger" href="" center onclick="setName(<%= game %>)"> Join Game as Observor!!</a></td>
+        <% end%>
+  </tr>
+<% end %>
+  </tbody>
+</table>

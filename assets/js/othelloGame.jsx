@@ -11,10 +11,7 @@ export default function run_othello(root, channel) {
 class Othello extends React.Component{
     constructor(props){
         super(props);
-       // console.log(playerName);
         this.channel = props.channel;
-        console.log("calling join");
-        console.log("player name is "+ playerName);
         this.channel.join()
         .receive("ok", this.gotView.bind(this))
         .receive("error", resp => { console.log("Unable to join", resp); });
@@ -34,61 +31,13 @@ class Othello extends React.Component{
           this.setState(game);
       
         });
-        // this.channel.on("player:entered",game =>{
-
-        //   console.log("player:entered mein aaya ");
-        //   console.log("player name is "+ playerName);
-          
-        //     // if(game.playerBlack == null){
-        //     //   this.setState({
-        //     //     squares: game.squares,
-        //     //     scoreBlack: game.scoreBlack,
-        //     //     scoreWhite: game.scoreWhite,
-        //     //     turn: game.turn,
-        //     //     playerWhite: game.playerWhite,
-        //     //     playerBlack: playerName,
-        //     //     observors: game.observors
-        //     //   })
-        //     // }
-        //     // else if(game.playerWhite == null){
-        //     //   this.setState({
-        //     //     squares: game.squares,
-        //     //     scoreBlack: game.scoreBlack,
-        //     //     scoreWhite: game.scoreWhite,
-        //     //     turn: game.turn,
-        //     //     playerWhite: playerName,
-        //     //     playerBlack: game.playerBlack,
-        //     //     observors: game.observors
-        //     //   })
-        //     // }
-        //     // else{
-        //     //   this.setState({
-        //     //     squares: game.squares,
-        //     //     scoreBlack: game.scoreBlack,
-        //     //     scoreWhite: game.scoreWhite,
-        //     //     turn: game.turn,
-        //     //     playerWhite: game.playerWhite,
-        //     //     playerBlack: game.playerBlack,
-        //     //     observors: game.observors + [playerName]
-        //     //   })
-        //     // }
-        //     this.channel.push("player:joined", {player_name: playerName})
-        //     .receive("ok", this.gotView.bind(this))
-
-        // })
     }
    
 
     gotView(view){
-      console.log(view.game);
-    //  const scoreWB = this.state.scoreWhite;
-     // const scoreBB = this.state.scoreBlack;
       this.setState(view.game);
       const score1 = view.game.scoreWhite;
       const score2 = view.game.scoreBlack;
-     // if(scoreWB == score1 && scoreBB == score2){
-      //  alert("Invalid Move! You lost your turn")
-     // }
       if(score1+score2 == 64){
         if(score1 > score2){
           alert("White Wins");
@@ -100,15 +49,25 @@ class Othello extends React.Component{
           alert("match ties click restart to play again");
         }
       }
+      if(this.state.scoreWhite==0){
+        alert(view.game.playerBlack + "wins");
+        alert("Restarting Game");
+        this.restartFn();
+      }
+      if(this.state.scoreBlack==0){
+        alert(view.game.playerWhite + "wins");
+        alert("Restarting Game");
+        this.restartFn();
+      }
     }
     handleClickByServer(i){
-      //console.log("yaha aaay");
+     
       this.channel.push("handleClickByServer",{num:i, player_name: playerName })
           .receive("ok", this.gotView.bind(this))
 
     }
     handleClick(i){
-      //console.log("clicked")
+     
        this.handleClickByServer(i); 
     }
     restartFn(){

@@ -16,8 +16,10 @@ defmodule Othello.GameBackup do
         Map.get(state, name)
       end
     end
-    def getAll do
-      Agent.get(__MODULE__, &(&1))
+    def getAll() do
+      Agent.get __MODULE__, fn state ->
+        Map.keys(state)
+      end
     end
      
 end 
