@@ -28,7 +28,7 @@ class Othello extends React.Component{
             cturn: ""
         };
         this.channel.on("reload:view:click", view => {
-          this.setState(game);
+          this.setState(view.game);
           const score1 = view.game.scoreWhite;
           const score2 = view.game.scoreBlack;
           if(score1+score2 == 64){
@@ -69,7 +69,9 @@ class Othello extends React.Component{
         });
         this.channel.on("reload:view:quit", view => {
           this.setState(view.game);
-          alert(view.player_name + " left the game!");
+          if(playerName != view.player_name){
+            alert(view.player_name + " left the game!");
+          }
          
       
         });
@@ -110,7 +112,7 @@ class Othello extends React.Component{
         this.channel.push("quitFn",{player_name: playerName})
         .receive("ok",this.gotView.bind(this))
   
-        window.setTimeout(function(){ window.location = "http://localhost:4000/table/" + playerName; },500);
+        window.setTimeout(function(){ window.location = "http://localhost:4000/table/" + playerName; },100);
       }
       
     }

@@ -47,10 +47,10 @@ body {
     text-align: center;
 }
 .setfont {
-    font-size: 25px;
+    font-size: 30px;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
-    color: #dc3545;
+    color: darkred;
     
 }
 .game-button {
