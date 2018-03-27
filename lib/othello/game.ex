@@ -1081,11 +1081,11 @@ defmodule Othello.Game do
         cturn = game.cturn
         if(playerBlack == playerName) do
             playerBlack = nil
-            cturn = playerWhite
+            cturn = "Waiting for player Black to join"
         else
             if(playerWhite == playerName) do
                 playerWhite = nil
-                cturn = playerBlack
+                cturn = "Waiting for player White to join"
             else
                 observers = Enum.filter(observers, fn(x) -> x != playerName end)
             end
