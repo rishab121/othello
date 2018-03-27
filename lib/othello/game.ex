@@ -1066,4 +1066,33 @@ defmodule Othello.Game do
         } 
     end
 
+    #RETURNS : a game with the playerName removed from playerBlack
+    #          if the playerName was playerBlack or removed from
+    #          playerWhite if the playerName was playerWhite else
+    #          removed from the observers list.
+    def handleQuit(game, playerName) do
+        playerWhite = game.playerWhite
+        playerBlack = game.playerBlack
+        observers = game.observers
+        if(playerBlack == playerName) do
+            playerBlack = nil
+        else
+            if(playerWhite == playerName) do
+                playerWhite = nil
+            else
+                observers = Enum.filter(observers, fn(x) -> x != playerName end)
+            end
+        end
+        %{
+            squares: game.squares,
+            scoreBlack: game.scoreBlack,
+            scoreWhite: game.scoreWhite,
+            turn: game.turn,
+            playerBlack: playerBlack,
+            playerWhite: playerWhite,
+            observers: observers,
+            cturn: game.cturn 
+        }
+    end
+
 end
