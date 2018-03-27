@@ -1078,11 +1078,14 @@ defmodule Othello.Game do
         playerWhite = game.playerWhite
         playerBlack = game.playerBlack
         observers = game.observers
+        cturn = game.cturn
         if(playerBlack == playerName) do
             playerBlack = nil
+            cturn = playerWhite
         else
             if(playerWhite == playerName) do
                 playerWhite = nil
+                cturn = playerBlack
             else
                 observers = Enum.filter(observers, fn(x) -> x != playerName end)
             end
@@ -1095,7 +1098,7 @@ defmodule Othello.Game do
             playerBlack: playerBlack,
             playerWhite: playerWhite,
             observers: observers,
-            cturn: game.cturn 
+            cturn: cturn 
         }
     end
 
