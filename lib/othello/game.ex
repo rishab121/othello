@@ -1079,22 +1079,38 @@ defmodule Othello.Game do
         playerBlack = game.playerBlack
         observers = game.observers
         cturn = game.cturn
+        squares = game.squares
+        scoreBlack = game.scoreBlack
+        scoreWhite = game.scoreWhite
+        turn = game.turn
         if(playerBlack == playerName) do
             playerBlack = nil
             cturn = "Waiting for player Black to join"
+            squares = [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil]
+            scoreBlack = 2
+            scoreWhite = 2
+            turn = 0
         else
             if(playerWhite == playerName) do
                 playerWhite = nil
                 cturn = "Waiting for player White to join"
+                squares = [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil]
+                scoreBlack = 2
+                scoreWhite = 2
+                turn = 0
             else
                 observers = Enum.filter(observers, fn(x) -> x != playerName end)
+                squares = game.squares
+                scoreBlack = game.scoreBlack
+                scoreWhite = game.scoreWhite
+                turn = game.turn
             end
         end
         %{
-            squares: [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,1,0,nil,nil,nil,nil,nil,nil,0,1,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
-            scoreBlack: 2,
-            scoreWhite: 2,
-            turn: 0,
+            squares: squares,
+            scoreBlack: scoreBlack,
+            scoreWhite: scoreWhite,
+            turn: turn,
             playerBlack: playerBlack,
             playerWhite: playerWhite,
             observers: observers,
