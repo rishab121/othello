@@ -1,44 +1,26 @@
 
  <script>
-        function displayname(){
-        //var tb = document.getElementById('game_name').value
-        //window.addEventListener("change", myFunction);
-        //var a = document.getElementById("a");
-        //var st = "games/" + tb;
-        //a.setAttribute("href",st);
-        }
-
         function setPlayerName(){
-            console.log("player naaming functoion");
-
             var pn = document.getElementById('player_name').value;
             var a = document.getElementById("a");
             var st = "table/" + pn;
             a.setAttribute("href",st);
 
-            //window.player_name = pn;
-
         }
-    function setName(gamename){
-      console.log("called mf");
-      var pn = document.getElementById('player_name').value;
-      var b = document.getElementById("b")
-      var st = "games/" + gamename + "/" + pn;
-      b.setAttribute("href",st);
-  }
+   
 </script>
 <style>
 body {
-        /* Image Attribution: www.flickr.com */
+        /* Image Attribution: www.flickr.com *
+        CSS Attribtution: stackoverflow.com, w3schools.com
+
+        */
         background: url("/images/othello2-min.jpg") no-repeat center top fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover; 
         
-
-    /* Center and scale the image nicely */
-    
 
 }
 .relative {
