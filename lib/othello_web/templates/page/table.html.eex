@@ -39,7 +39,7 @@
       <th>Game Name</th>
       <th>First Player </th>
       <th>Second Player </th>
-      <th>Handle </th>
+      <th>Action </th>
     </tr>
   </thead>
   <tbody>
