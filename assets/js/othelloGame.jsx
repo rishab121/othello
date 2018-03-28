@@ -35,9 +35,13 @@ class Othello extends React.Component{
       if(score1+score2 == 64){
         if(score1 > score2){
           alert("White Wins");
+          alert("Restarting Game");
+          this.restartNormal(); 
         }
         else if(score2 > score1){
           alert("Black Wins");
+          alert("Restarting Game");
+          this.restartNormal(); 
         }
         else{
           alert("match ties click restart to play again");
