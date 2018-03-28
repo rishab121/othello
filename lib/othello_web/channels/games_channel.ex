@@ -1,6 +1,7 @@
 defmodule OthelloWeb.GamesChannel do
   use OthelloWeb, :channel
-
+#Attribution : Professor class notes
+# phoenix channel documentation
   def join("games:"<> name, payload, socket) do
     game = Othello.GameBackup.load(name) || Othello.Game.new()
     socket = socket

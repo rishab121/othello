@@ -1,6 +1,6 @@
 defmodule Othello.GameBackup do
     use Agent
-  
+  #Attribution: Professor class notes
     def start_link do
       Agent.start_link(fn -> %{} end, name: __MODULE__)
     end

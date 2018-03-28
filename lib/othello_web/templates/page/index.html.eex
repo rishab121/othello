@@ -29,6 +29,7 @@
 </script>
 <style>
 body {
+        /* Image Attribution: www.flickr.com */
         background: url("/images/othello2-min.jpg") no-repeat center top fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;

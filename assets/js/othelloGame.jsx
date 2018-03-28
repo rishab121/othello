@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Button } from 'reactstrap';
 
 //Attribution : https://reactjs.org/tutorial/tutorial.html
+//nat tuck class notes
+// bootstrap documentation
 
 export default function run_othello(root, channel) {
   ReactDOM.render(<Othello channel={channel}/>, root);
@@ -131,41 +133,41 @@ class Othello extends React.Component{
     return (
       <div>
       <div className="game">
-      <div className="game-board">
-      <Board 
-      squares= {current}
-      onClick = {(i) => this.handleClick(i)}
-      />
-      </div>
+        <div className="game-board">
+        <Board 
+          squares= {current}
+          onClick = {(i) => this.handleClick(i)}
+        />
+        </div>
       
-      <div className="scorecard">
-      <h3 id="scoreTitle">Score Card</h3>
-      <span className="black-large"><p>{this.state.scoreBlack}</p></span>
-      <div className="score"><p>{this.state.playerBlack} </p></div>
-      <span className="white-large"><p> {this.state.scoreWhite}</p></span>
-      <div className="score"><p>{this.state.playerWhite} </p></div>
-      <div className="score"><p>Current Turn  :: {this.state.cturn} </p></div>
-      <div> <RestartFunc onClick = {() => this.restartFn()} pl ={pl} /> </div><br /> 
-      <div> <QuitFunc onClick = {() => this.quitFn()} /> </div>
-      </div>
+        <div className="scorecard">
+          <h3 id="scoreTitle">Score Card</h3>
+          <span className="black-large"><p>{this.state.scoreBlack}</p></span>
+          <div className="score"><p>{this.state.playerBlack} </p></div>
+          <span className="white-large"><p> {this.state.scoreWhite}</p></span>
+          <div className="score"><p>{this.state.playerWhite} </p></div>
+          <div className="score"><p>Current Turn  :: {this.state.cturn} </p></div>
+          <div> <RestartFunc onClick = {() => this.restartFn()} pl ={pl} /> </div><br /> 
+          <div> <QuitFunc onClick = {() => this.quitFn()} /> </div>
+        </div>
       </div>  <br /> 
       
       <div className="scroll-table"> 
-      <table className="table table-dark"> 
-      <thead>
-      <tr>
-      <th className="center">Observers</th>
-      </tr>
-      </thead>
-      <tbody>
-      <ObservorsPrint observers={this.state.observers} /> 
-      </tbody>
-      </table>
+        <table className="table table-dark"> 
+          <thead>
+            <tr>
+            <th className="center">Observers</th>
+            </tr>
+          </thead>
+          <tbody>
+             <ObservorsPrint observers={this.state.observers} /> 
+          </tbody>
+        </table>
       </div>  <br /> 
       <div>
-      <a className="btn btn-primary btn-lg center" href="https://github.com/rishab121/othello" target="_blank">
-      Github Link
-      </a>
+       <a className="btn btn-primary btn-lg center" href="https://github.com/rishab121/othello" target="_blank">
+        Github Link
+        </a>
       </div>
       </div>
     );
