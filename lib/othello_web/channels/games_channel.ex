@@ -2,7 +2,6 @@ defmodule OthelloWeb.GamesChannel do
   use OthelloWeb, :channel
 
   def join("games:"<> name, payload, socket) do
-    IO.puts("join mein aaya")
     game = Othello.GameBackup.load(name) || Othello.Game.new()
     socket = socket
     |> assign(:game, game)
@@ -45,7 +44,6 @@ defmodule OthelloWeb.GamesChannel do
   end
 
   def handle_in("player:joined", %{"player_name" => player_name},socket) do
-    IO.puts("player:joined mein aaya ");
     game0 = Othello.GameBackup.load(socket.assigns[:name])
     if(game0 == nil) do
       game0 = Othello.Game.new()
