@@ -118,7 +118,7 @@ class Othello extends React.Component{
       this.channel.push("quitFn",{player_name: playerName})
       .receive("ok",this.gotView.bind(this))
       
-      window.setTimeout(function(){ window.location = "http://localhost:4000/table/" + playerName; },100);
+      window.setTimeout(function(){ window.location = "http://othello.rishabmalik.info/table/" + playerName; },100);
     }
     
   }
