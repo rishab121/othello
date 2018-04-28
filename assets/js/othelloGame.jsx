@@ -156,7 +156,7 @@ class Othello extends React.Component{
         <table className="table table-dark"> 
           <thead>
             <tr>
-            <th className="center">Observers</th>
+            <th className="center">Unique Observers</th>
             </tr>
           </thead>
           <tbody>

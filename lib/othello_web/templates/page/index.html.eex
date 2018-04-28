@@ -24,10 +24,15 @@ body {
 
 }
 .relative {
-    position: fixed;
-    top:520px;
-    left:570px;
-    text-align: center;
+   
+    position: absolute;
+     margin: auto;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     width: 100px;
+     height: 100px;
 }
 .setfont {
     font-size: 30px;
@@ -36,19 +41,36 @@ body {
     color: darkred;
     
 }
-.game-button {
-    position: fixed;
-    top:590px;
-    left:820px;
-    text-align: center;
-   
+
+.Aligner {
+  display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+
+	align-items: center;
 }
 
+.Aligner-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 </style>
-<div class="setfont relative" center>
-Enter Your Name <input type=text id="player_name" onchange="setPlayerName()" required>
+<div class="Aligner">
+  <div class="Aligner-item">  
+    <div ><input type=text id="player_name" onchange="setPlayerName()" required placeholder="Enter Your Name"></div><br>
+    <div>
+        <a id="a" class= "btn btn-lg  btn-danger" href="" center>Enter Game Lobby!!</a>
+    </div>
+  </div>  
 </div>
-<div class="game-button">
-<a id="a" class= "btn btn-lg  btn-danger" href="" center> Game Lobby!!</a>
-</div>
+
+
 

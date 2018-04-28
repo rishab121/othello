@@ -1048,13 +1048,15 @@ defmodule Othello.Game do
                 cturn = playerBlack
             end 
         else
-            if(playerBlack != nil and playerWhite == nil) do
+            if(playerBlack != nil and playerWhite == nil and playerBlack != playerName) do
                 playerWhite = playerName
                 cturn = playerBlack
             else
                 if(playerBlack != nil and playerWhite != nil) do
-                    observer = [playerName]
-                    observers = observers++observer
+                    if !Enum.member?(observers,playerName) and playerName != playerBlack and playerName != playerWhite do
+                        observer = [playerName]
+                        observers = observers++observer
+                    end
                 end
             end
         end
