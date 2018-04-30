@@ -48,7 +48,7 @@
   transform: translate(-50%, -50%);
 }
 .scroll-table1{
-    height: 20em !important;
+    height: 15em;
     overflow: scroll;
     width: 100%;
 
@@ -72,17 +72,17 @@
                     <td><%= game %></td>
                     <%= if Othello.GameBackup.load(game).playerBlack == nil do %>
                         <td><%= "slot empty" %></td>
-                    <%= else %>
+                    <% else %>
                         <td><%= Othello.GameBackup.load(game).playerBlack %></td>
-                    <% end%>    
+                    <% end %>    
                     <%= if Othello.GameBackup.load(game).playerWhite == nil do %>
                         <td><%= "slot empty" %></td>
-                    <%= else %>
+                    <% else %>
                         <td><%= Othello.GameBackup.load(game).playerWhite %></td>
                     <% end %>        
                     <%= if Othello.GameBackup.load(game).playerWhite == nil or Othello.GameBackup.load(game).playerBlack == nil do %>
                         <td><a id="b" class= "btn btn-success" href="" center onclick="this.href = '/games/' + '<%= game %>' + '/' + '<%= @player_name %>'" > Join Game as Player!!</a></td>
-                    <%= else %>    
+                    <% else %>    
                         <td><a id="b" class= "btn btn-primary" href="" center onclick="this.href = '/games/' + '<%= game %>' + '/' + '<%= @player_name %>'"> Join Game as Observer!!</a></td>
                     <% end %>
                 </tr>
